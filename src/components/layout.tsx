@@ -1,20 +1,26 @@
 import Footer from "./footer"
 import Header from "./header"
-import type { ReactNode } from "react"
+import Container from '@mui/material/Container'
 
 interface Props {
-    children: ReactNode
+    children: React.ReactElement
 }
 
 const Layout = ({ children }: Props) => {
 
     return (
         <>
-            <Header />
-            <main>
-                {children}
-            </main>
-            <Footer />
+            <Container
+                fixed
+            >
+
+                <Header />
+                <main>
+                    {children}
+                </main>
+                <Footer />
+
+            </Container>
         </>
     )
 
