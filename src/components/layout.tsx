@@ -11,7 +11,7 @@ const Layout = ({ children }: Props) => {
     return (
         <>
             <Container
-                fixed
+                maxWidth='xl'
             >
 
                 <Header />

@@ -1,7 +1,8 @@
-import { Toolbar, Typography, Button, Paper } from "@mui/material"
+import { Toolbar, Typography, Button, Paper, Link as MuiLink, AppBar, Grid } from "@mui/material"
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
+
 
 const Header = () => {
 
@@ -14,22 +15,74 @@ const Header = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <Toolbar id="back-to-top-anchor" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <AppBar
+                position="static"
+                color="transparent"
+                elevation={0}
+                sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+            >
 
-                <Link
-                    href='/'
-                >
-                    <Image
-                        priority
-                        src={'logo-monas_adobe_express.svg'}
-                        alt='monas-icon'
-                        height={40}
-                        width={40}
-                    />
-                </Link>
+                <Toolbar
+                    id="back-to-top-anchor"
+                    sx={{
+                        flexWrap: 'wrap'
+                    }}>
 
-            </Toolbar>
+                    <MuiLink
+                        component={Link}
+                        href='/'
+                        noWrap sx={{ flexGrow: 1 }}
+                    >
+                        <Image
+                            priority
+                            src={'logo-monas_adobe_express.svg'}
+                            alt='monas-icon'
+                            height={50}
+                            width={50}
+                        />
+                    </MuiLink>
 
+                    <nav>
+                        <MuiLink
+                            component={Link}
+                            variant="button"
+                            color="primary"
+                            underline="hover"
+                            fontWeight={800}
+                            href="/history"
+                            sx={{ mx: 1.5 }}
+                        >
+                            Sejarah
+                        </MuiLink>
+
+
+                        <MuiLink
+                            component={Link}
+                            variant="button"
+                            color="primary"
+                            underline="hover"
+                            fontWeight={800}
+                            href="/place"
+                            sx={{ mx: 1.5 }}
+                        >
+                            Wisata
+                        </MuiLink>
+
+                        <MuiLink
+                            component={Link}
+                            fontWeight={800}
+                            variant="button"
+                            color="primary"
+                            underline="hover"
+                            href="/ticket"
+                            sx={{ mx: 1.5 }}
+                        >
+                            Tiket
+                        </MuiLink>
+                    </nav>
+
+                </Toolbar>
+            </AppBar>
 
         </>
     )

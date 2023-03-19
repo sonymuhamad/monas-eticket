@@ -15,7 +15,7 @@ const HomePage = () => {
           mt: 3,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
+          backgroundPosition: '25% 55%',
           backgroundImage: `url(head-monas-pict.jpg)`,
         }}
       >
@@ -25,7 +25,8 @@ const HomePage = () => {
         >
           <Grid
             item
-            md={6}
+            md={7}
+            mb={20}
           >
             <Box
               sx={{
@@ -45,11 +46,11 @@ const HomePage = () => {
               </Typography>
 
               <Typography
-                component='h5'
+                component='h1'
                 color='inherit'
                 paragraph
               >
-                Platform pembelian tiket online
+                Jakarta's famous landmark in the heart of the city
               </Typography>
 
             </Box>
