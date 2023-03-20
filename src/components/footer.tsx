@@ -10,7 +10,7 @@ function Copyright() {
         <Typography variant="body2" color="text.secondary">
             {'Copyright © '}
             <Link color="inherit" href="/">
-                E-Ticket.com
+                monas.com
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -24,7 +24,7 @@ export default function Footer() {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: '10vh',
+                minHeight: '20vh',
             }}
         >
             <CssBaseline />
@@ -42,7 +42,7 @@ export default function Footer() {
             >
                 <Container maxWidth="sm">
                     <Typography variant="body1">
-                        Monas E-Ticket.
+                        Monumen Nasional Indonesia
                     </Typography>
                     <Copyright />
                 </Container>
