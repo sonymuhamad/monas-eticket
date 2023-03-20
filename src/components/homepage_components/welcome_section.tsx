@@ -57,7 +57,7 @@ const Welcome = () => {
                                 color='inherit'
                                 paragraph
                             >
-                                Jakarta's famous landmark in the heart of the city
+                                Jakarta&apos;s famous landmark in the heart of the city
                             </Typography>
 
                         </Box>
