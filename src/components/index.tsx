@@ -1,4 +1,12 @@
 
 import Layout from './layout'
 
-export { Layout }
+import { Welcome, History, Art, Review } from './homepage_components'
+
+export {
+    Layout,
+    Welcome,
+    History,
+    Art,
+    Review
+}
