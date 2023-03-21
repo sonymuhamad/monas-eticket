@@ -1,20 +1,39 @@
-import { Avatar, Typography, Badge, Box, Paper, Grid, Tab } from "@mui/material"
+import { Avatar, Typography, Badge, Box, Paper, Grid, Tab, Fade } from "@mui/material"
 import { FormatQuote } from "@mui/icons-material"
 import { TabPanel, TabContext, TabList } from "@mui/lab"
 
 import { PanoramaFishEye } from "@mui/icons-material"
-
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
+import { useOnScreen } from "@/components/hooks"
 
 const Review = () => {
 
     const [tabVal, setTabVal] = useState('1')
+    const commentRef = useRef<HTMLDivElement>(null)
+    const { alreadySeen } = useOnScreen(commentRef)
 
     const onChangeTab = (e: React.SyntheticEvent, value: unknown): void => {
         if (value && typeof value === 'string') {
             setTabVal(value)
         }
     }
+
+    useEffect(() => {
+
+        if (alreadySeen) {
+            const interval = setInterval(() => {
+                setTabVal((prev) => {
+                    if (Number(prev) === 3) {
+                        return String(1)
+                    }
+                    return String(Number(prev) + 1)
+                })
+            }, 7000)
+            return () => clearInterval(interval)
+        }
+
+    }, [tabVal, alreadySeen])
+
 
     return (
         <>
@@ -40,76 +59,90 @@ const Review = () => {
                             justifyContent={'center'}
                         >
 
-                            <TabPanel value={'1'}>
+                            <div ref={commentRef}>
 
-                                <Box
-                                    component={Paper}
-                                    elevation={0}
-                                    sx={{
-                                        maxWidth: '650px',
-                                        p: 5,
+                                {alreadySeen && <Fade
+                                    in={true}
+                                    timeout={{
+                                        enter: 4000
                                     }}
                                 >
-                                    <Grid
-                                        display='flex'
-                                        alignItems={'center'}
-                                        justifyContent={'center'}
-                                    >
-                                        <Badge
-                                            overlap="circular"
-                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                            badgeContent={<FormatQuote color="info" />}
+
+                                    <TabPanel value={'1'}>
+
+                                        <Box
+                                            component={Paper}
+                                            elevation={0}
+                                            sx={{
+                                                maxWidth: '650px',
+                                                p: 5,
+                                            }}
                                         >
-                                            <Avatar
-                                                alt='selfie'
-                                                src="selfie.jpg"
-                                                sx={{ width: 85, height: 85 }}
-                                            />
+                                            <Grid
+                                                display='flex'
+                                                alignItems={'center'}
+                                                justifyContent={'center'}
+                                            >
+                                                <Badge
+                                                    overlap="circular"
+                                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                                    badgeContent={<FormatQuote color="info" />}
+                                                >
+                                                    <Avatar
+                                                        alt='selfie'
+                                                        src="selfie.jpg"
+                                                        sx={{ width: 85, height: 85 }}
+                                                    />
 
-                                        </Badge>
-                                    </Grid>
+                                                </Badge>
+                                            </Grid>
 
-                                    <Typography
-                                        align="center"
-                                        component='h3'
-                                        variant='h6'
-                                        sx={{
-                                            fontFamily: 'Segoe UI Symbol',
-                                            mt: 3
-                                        }}
-                                    >
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci asperiores non, minima ipsum autem doloribus! Consectetur, neque quia tempore illum et vel eaque, ipsum ex nulla quod accusantium possimus. Ducimus.
-                                    </Typography>
+                                            <Typography
+                                                align="center"
+                                                component='h3'
+                                                variant='h6'
+                                                sx={{
+                                                    fontFamily: 'Segoe UI Symbol',
+                                                    mt: 3
+                                                }}
+                                            >
+                                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci asperiores non, minima ipsum autem doloribus! Consectetur, neque quia tempore illum et vel eaque, ipsum ex nulla quod accusantium possimus. Ducimus.
+                                            </Typography>
 
-                                    <Typography
-                                        align="center"
-                                        component='h6'
-                                        variant='body1'
-                                        fontWeight={750}
-                                        sx={{
-                                            fontFamily: 'Segoe UI Symbol',
-                                            my: 2,
-                                            color: '#696969',
-                                        }}
-                                    >
-                                        - Mama Tia. Pengunjung
-                                    </Typography>
+                                            <Typography
+                                                align="center"
+                                                component='h6'
+                                                variant='body1'
+                                                fontWeight={750}
+                                                sx={{
+                                                    fontFamily: 'Segoe UI Symbol',
+                                                    my: 2,
+                                                    color: '#696969',
+                                                }}
+                                            >
+                                                - Mama Tia. Pengunjung
+                                            </Typography>
 
-                                    <Typography
-                                        align="right"
-                                        fontWeight={750}
-                                        component='h6'
-                                        variant='h6'
-                                        sx={{
-                                            fontFamily: 'Segoe UI Symbol',
-                                            color: '#696969',
-                                            mt: 4
-                                        }}
-                                    >
-                                        #Ayokemonas
-                                    </Typography>
-                                </Box>
-                            </TabPanel>
+                                            <Typography
+                                                align="right"
+                                                fontWeight={750}
+                                                component='h6'
+                                                variant='h6'
+                                                sx={{
+                                                    fontFamily: 'Segoe UI Symbol',
+                                                    color: '#696969',
+                                                    mt: 4
+                                                }}
+                                            >
+                                                #Ayokemonas
+                                            </Typography>
+                                        </Box>
+                                    </TabPanel>
+
+                                </Fade>
+                                }
+
+                            </div>
 
                             <TabPanel
                                 value={'2'}
@@ -255,6 +288,7 @@ const Review = () => {
                                     </Typography>
                                 </Box>
                             </TabPanel>
+
 
                             <Grid
                                 display='flex'
