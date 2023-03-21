@@ -1,10 +1,45 @@
-import { Toolbar, Typography, Button, Paper, Link as MuiLink, AppBar, Grid } from "@mui/material"
+import { Toolbar, Tab, Link as MuiLink, AppBar } from "@mui/material"
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
+import { TabContext, TabList } from "@mui/lab"
+import { useState } from "react"
+import { useRouter } from "next/router"
 
+type Path = '/' | '/history' | '/place' | '/ticket'
 
 const Header = () => {
+
+    const [path, setPath] = useState<Path>('/')
+    const router = useRouter()
+
+    const updatePath = (strPath: string) => {
+        switch (strPath) {
+            case '/':
+                setPath(strPath)
+                break
+            case '/history':
+                setPath(strPath)
+                break
+            case '/place':
+                setPath(strPath)
+                break
+            case '/ticket':
+                setPath(strPath)
+                break
+            default:
+                const _exhaustiveDepth = strPath
+                throw new Error('There is an unhandled route' + _exhaustiveDepth)
+        }
+    }
+
+
+    const onChangePath = (e: React.SyntheticEvent, value: unknown) => {
+        if (value && typeof value === 'string') {
+            updatePath(value)
+            router.push(`/${value}`)
+        }
+    }
 
     return (
         <>
@@ -43,42 +78,51 @@ const Header = () => {
                     </MuiLink>
 
                     <nav>
-                        <MuiLink
-                            component={Link}
-                            variant="button"
-                            color="primary"
-                            underline="hover"
-                            fontWeight={800}
-                            href="/history"
-                            sx={{ mx: 1.5 }}
-                        >
-                            Sejarah
-                        </MuiLink>
 
-
-                        <MuiLink
-                            component={Link}
-                            variant="button"
-                            color="primary"
-                            underline="hover"
-                            fontWeight={800}
-                            href="/place"
-                            sx={{ mx: 1.5 }}
+                        <TabContext
+                            value={path}
                         >
-                            Wisata
-                        </MuiLink>
+                            <TabList
+                                value={path}
+                                onChange={onChangePath}
+                                aria-label="nav tabs example"
+                            >
+                                <Tab
+                                    label="Home"
+                                    value='/'
+                                    aria-label="Home Page"
+                                    sx={{
+                                        fontWeight: 750
+                                    }}
+                                />
+                                <Tab
+                                    label='Sejarah'
+                                    value={'/history'}
+                                    aria-label="Sejarah"
+                                    sx={{
+                                        fontWeight: 750
+                                    }}
+                                />
+                                <Tab
+                                    label='Wisata'
+                                    value={'/place'}
+                                    aria-label="Wisata"
+                                    sx={{
+                                        fontWeight: 750
+                                    }}
+                                />
+                                <Tab
+                                    label='Tiket'
+                                    value={'/ticket'}
+                                    aria-label="Tiket"
+                                    sx={{
+                                        fontWeight: 750
+                                    }}
+                                />
+                            </TabList>
 
-                        <MuiLink
-                            component={Link}
-                            fontWeight={800}
-                            variant="button"
-                            color="primary"
-                            underline="hover"
-                            href="/ticket"
-                            sx={{ mx: 1.5 }}
-                        >
-                            Tiket
-                        </MuiLink>
+                        </TabContext>
+
                     </nav>
 
                 </Toolbar>
