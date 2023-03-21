@@ -1,35 +1,45 @@
 import { Fade, Typography, Grid, Card, CardMedia, CardContent } from "@mui/material"
-
+import { useOnScreen } from "@/components/hooks"
+import { useRef } from "react"
 
 const Art = () => {
 
+    const artRef = useRef<HTMLDivElement>(null)
+    const { alreadySeen } = useOnScreen(artRef)
+
     return (
         <>
-            <Fade
-                in={true}
-                timeout={{
-                    enter: 2000
-                }}
+            <div
+                ref={artRef}
             >
-
-                <Typography
-                    component='h1'
-                    variant="h4"
-                    mb={5}
-                    mt={10}
-                    align="center"
-                    color='inherit'
-                    gutterBottom={true}
-                    fontWeight={800}
-                    sx={{
-                        fontFamily: 'Segoe UI Symbol',
-                        color: '#696969'
+                {alreadySeen && <Fade
+                    in={true}
+                    timeout={{
+                        enter: 4000
                     }}
                 >
-                    Wisata Sejarah <br />
-                </Typography>
 
-            </Fade>
+                    <Typography
+                        component='h1'
+                        variant="h4"
+                        mb={5}
+                        mt={10}
+                        align="center"
+                        color='inherit'
+                        gutterBottom={true}
+                        fontWeight={800}
+                        sx={{
+                            fontFamily: 'Segoe UI Symbol',
+                            color: '#696969'
+                        }}
+                    >
+                        Wisata Sejarah <br />
+                    </Typography>
+
+                </Fade>
+                }
+
+            </div>
 
             <Grid container spacing={4} >
                 <Grid item xs={12} sm={6} md={4}>

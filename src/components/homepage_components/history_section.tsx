@@ -1,37 +1,48 @@
 import { Typography, Fade, Box, Paper, Grid } from "@mui/material"
-
-
+import { useOnScreen } from "@/components/hooks"
+import React, { useRef } from "react"
 
 const History = () => {
+
+    const titleRef = useRef<HTMLDivElement>(null)
+    const { alreadySeen } = useOnScreen(titleRef)
+
 
     return (
         <>
 
-            <Fade
-                in={true}
-                timeout={{
-                    enter: 2000
-                }}
+            <div
+                ref={titleRef}
             >
 
-                <Typography
-                    component='h1'
-                    variant="h4"
-                    mb={5}
-                    align="center"
-                    color='inherit'
-                    gutterBottom={true}
-                    fontWeight={800}
-                    sx={{
-                        fontFamily: 'Segoe UI Symbol',
-                        color: '#696969'
+                {alreadySeen && <Fade
+                    in={true}
+                    timeout={{
+                        enter: 4000
                     }}
                 >
-                    Sejarah <br />
-                    Monumen Nasional Indonesia
-                </Typography>
 
-            </Fade>
+                    <Typography
+                        component='h1'
+                        variant="h4"
+                        mb={5}
+                        align="center"
+                        color='inherit'
+                        gutterBottom={true}
+                        fontWeight={800}
+                        sx={{
+                            fontFamily: 'Segoe UI Symbol',
+                            color: '#696969'
+                        }}
+                    >
+                        Tentang <br />
+                        Monumen Nasional Indonesia
+                    </Typography>
+
+                </Fade>
+                }
+
+            </div>
 
             <Grid
                 container
@@ -50,7 +61,6 @@ const History = () => {
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'contain',
                         backgroundPosition: '50% 20%',
-                        borderRadius: '50%',
                     }}
                 />
 

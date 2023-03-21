@@ -1,17 +1,18 @@
-import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from 'next/link';
+
+import { Grid } from '@mui/material';
 
 function Copyright() {
     return (
-        <Typography variant="body2" color="text.secondary">
-            {'Copyright © '}
-            <Link color="inherit" href="/">
-                monas.com
-            </Link>{' '}
+        <Typography
+            variant="body2"
+            color="text.secondary"
+        >
+            {'Copyright © '} monas.com
+            {' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -41,9 +42,12 @@ export default function Footer() {
                 }}
             >
                 <Container maxWidth="sm">
-                    <Typography variant="body1">
-                        Monumen Nasional Indonesia
-                    </Typography>
+                    <Grid>
+
+                        <Typography variant="body1">
+                            Monumen Nasional Indonesia
+                        </Typography>
+                    </Grid>
                     <Copyright />
                 </Container>
             </Box>
