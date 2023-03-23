@@ -14,16 +14,21 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/lab": "^5.0.0-alpha.123",
     "@mui/material": "^5.11.13",
-    "@types/node": "18.15.3",
+    "@types/node": "^18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "bcrypt": "^5.1.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "mysql2": "^3.2.0",
     "next": "13.2.4",
+    "nodemailer": "^6.9.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sequelize": "^6.29.3",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.0"
   }
 }
