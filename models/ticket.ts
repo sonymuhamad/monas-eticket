@@ -51,4 +51,6 @@ const Ticket = sequelize.define('Ticket', {
 
 })
 
+export { Ticket }
+
 
