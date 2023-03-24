@@ -22,8 +22,8 @@ class Admin extends Model<InferAttributes<Admin>, InferCreationAttributes<Admin>
     declare created_at: CreationOptional<Date>
     declare updated_at: CreationOptional<Date>
 
-    valid_password = (password: string) => {
-        return bcrypt.compareSync(password, this.password)
+    valid_password = async (password: string) => {
+        return await bcrypt.compare(password, this.password)
     }
 
 
@@ -41,9 +41,10 @@ Admin.init(
             allowNull: false,
             unique: true,
             validate: {
-                min: {
-                    args: [6],
-                    msg: "Minimal 6 Karakter untuk membuat username"
+                minCharacter(value: string) {
+                    if (value.length < 6) {
+                        throw new Error('Username minimal 6 karakter')
+                    }
                 }
             }
         },
@@ -62,11 +63,11 @@ Admin.init(
             allowNull: false,
             validate: {
                 minCharacter(value: string) {
-                    if (value.length <= 7) {
+                    if (value.length < 8) {
                         throw new Error('Password harus minimal 8 karakter')
                     }
                 }
-            }
+            },
         },
         created_at: {
             type: DataTypes.DATE,
@@ -82,7 +83,9 @@ Admin.init(
         createdAt: 'created_at',
         updatedAt: 'updated_at',
         hooks: {
-
+            async beforeCreate(instance, options) {
+                instance.password = await bcrypt.hash(instance.password, 10)
+            }
         },
 
         sequelize,
