@@ -1,5 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Admin from "../../../../models/admin";
+import { InferCreationAttributes, ValidationError } from "sequelize";
+
+
+const updateHandler = async (instanceAdmin: Admin, params: InferCreationAttributes<Admin>) => {
+    try {
+        instanceAdmin.username = params.username
+        instanceAdmin.password = params.password
+        instanceAdmin.email = params.email
+        instanceAdmin.updated_at = new Date()
+        await instanceAdmin.save()
+        return instanceAdmin
+    } catch (e) {
+        if (e instanceof ValidationError) {
+            throw new Error(e.errors[0].message)
+        }
+    }
+
+}
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { adminId } = req.query
@@ -16,7 +35,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         case 'PUT':
             if (retrievedAdmin) {
-                res.status(200).send({ status: retrievedAdmin.valid_password(req.body.password) })
+                try {
+                    const updatedAdmin = await updateHandler(retrievedAdmin, req.body)
+                    res.status(200).send(updatedAdmin)
+
+                } catch (e) {
+                    if (e instanceof Error) {
+                        res.status(400).json({ message: e.message })
+                    } else {
+                        res.status(400).json({ message: "Edit admin failed" })
+                    }
+                }
+
 
             } else {
                 res.status(404).json({ Error: "Admin not found" })
