@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 if (e instanceof Error) {
                     res.status(400).json({ message: e.message })
                 } else {
-                    res.status(400).json({ message: "Add new user failed" })
+                    res.status(400).json({ message: "Add new admin failed" })
                 }
             }
             break
