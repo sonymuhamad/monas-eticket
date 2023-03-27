@@ -1,10 +1,10 @@
-
 import Loading from "../components/loading"
-import { Suspense } from "react"
-
+import { ReactElement, Suspense } from "react"
 import { Welcome, History, Art, Review } from "../components"
+import { Layout } from "../components"
+import { NextPageWithLayout } from "./_app"
 
-const HomePage = () => {
+const HomePage: NextPageWithLayout = () => {
 
   return (
     <>
@@ -12,23 +12,23 @@ const HomePage = () => {
       <Suspense fallback={<Loading />} >
 
         <Welcome />
-
         <History />
-
         <Art />
-
         <Review />
 
       </Suspense>
-
-
-
-
-
-
-
     </>
   )
+}
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  )
+
 }
 
 export default HomePage
