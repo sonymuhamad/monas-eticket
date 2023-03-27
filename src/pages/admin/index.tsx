@@ -1,4 +1,5 @@
 import Head from "next/head"
+import LoginPage from "@/components/components/admin/loginPage"
 
 const AdminPage = () => {
 
@@ -10,9 +11,7 @@ const AdminPage = () => {
                 </title>
             </Head>
 
-            <h1>
-                Hello world from admin page
-            </h1>
+            <LoginPage />
 
         </>
     )
