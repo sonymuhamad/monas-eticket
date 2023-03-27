@@ -5,11 +5,13 @@ import Container from '@mui/material/Container';
 
 import { Grid } from '@mui/material';
 
-function Copyright() {
+export function Copyright() {
     return (
         <Typography
             variant="body2"
             color="text.secondary"
+            mt={8}
+            mb={4}
         >
             {'Copyright © '} monas.com
             {' '}
