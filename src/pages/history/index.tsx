@@ -1,6 +1,9 @@
 import Head from "next/head"
+import { Layout } from "@/components/components"
+import { NextPageWithLayout } from "../_app"
+import { ReactElement } from "react"
 
-const HistoryPage = () => {
+const HistoryPage: NextPageWithLayout = () => {
 
     return (
         <>
@@ -17,5 +20,15 @@ const HistoryPage = () => {
         </>
     )
 }
+
+HistoryPage.getLayout = (historyPage: ReactElement) => {
+
+    return (
+        <Layout>
+            {historyPage}
+        </Layout>
+    )
+}
+
 
 export default HistoryPage

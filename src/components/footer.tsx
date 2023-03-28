@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 
 import { Grid } from '@mui/material';
 
-function Copyright() {
+export function Copyright() {
     return (
         <Typography
             variant="body2"
