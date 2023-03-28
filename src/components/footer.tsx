@@ -10,8 +10,6 @@ export function Copyright() {
         <Typography
             variant="body2"
             color="text.secondary"
-            mt={8}
-            mb={4}
         >
             {'Copyright © '} monas.com
             {' '}
