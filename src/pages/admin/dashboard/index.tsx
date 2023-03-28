@@ -1,7 +1,8 @@
+import LayoutAdmin from "@/components/components/admin/layout"
+import { NextPageWithLayout } from "../../_app"
+import React, { ReactElement } from "react"
 
-
-
-const DashboardPage = () => {
+const DashboardPage: NextPageWithLayout = () => {
 
     return (
         <>
@@ -9,5 +10,11 @@ const DashboardPage = () => {
         </>
     )
 }
+
+DashboardPage.getLayout = (dashboardPage: ReactElement) => (
+    <LayoutAdmin>
+        {dashboardPage}
+    </LayoutAdmin>
+)
 
 export default DashboardPage

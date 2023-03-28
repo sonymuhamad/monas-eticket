@@ -1,5 +1,5 @@
 import Head from "next/head"
-import LoginPage from "@/components/components/admin/loginPage"
+import LoginPage from "@/components/components/admin/login"
 
 const AdminPage = () => {
 
