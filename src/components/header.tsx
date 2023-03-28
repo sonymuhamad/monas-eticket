@@ -37,7 +37,7 @@ const Header = () => {
     const onChangePath = (e: React.SyntheticEvent, value: unknown) => {
         if (value && typeof value === 'string') {
             updatePath(value)
-            router.push(`/${value}`)
+            router.push(`${value}`)
         }
     }
 

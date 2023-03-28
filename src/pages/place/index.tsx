@@ -1,6 +1,9 @@
 import Head from "next/head"
+import { Layout } from "@/components/components"
+import { NextPageWithLayout } from "../_app"
+import { ReactElement } from "react"
 
-const PlacePage = () => {
+const PlacePage: NextPageWithLayout = () => {
 
     return (
         <>
@@ -16,6 +19,15 @@ const PlacePage = () => {
             </h1>
 
         </>
+    )
+}
+
+PlacePage.getLayout = (placePage: ReactElement) => {
+
+    return (
+        <Layout>
+            {placePage}
+        </Layout>
     )
 }
 
