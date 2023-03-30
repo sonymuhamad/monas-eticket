@@ -4,7 +4,7 @@ import { useState } from "react"
 import { IconButton } from "@mui/material"
 import { Menu, Dashboard, ChevronLeft, Logout, Receipt, Paid, Festival, Comment } from "@mui/icons-material"
 import Link from "next/link"
-
+import { useRouter } from "next/router"
 import Footer from "../footer"
 import CustomAppBar from "./custom_bar"
 import CustomDrawer from "./custom_drawer"
@@ -13,76 +13,91 @@ interface LayoutAdminProps {
     children: React.ReactElement
 }
 
-
-
-const mainListItems = (
-    <>
-        <ListItemButton
-            LinkComponent={Link}
-            href={'/admin/dashboard'}
-        >
-            <ListItemIcon>
-                <Dashboard />
-            </ListItemIcon>
-
-            <ListItemText primary="Dashboard" />
-        </ListItemButton>
-
-        <ListItemButton
-            LinkComponent={Link}
-            href={'/admin/dashboard/transactions'}
-        >
-            <ListItemIcon>
-                <Paid />
-            </ListItemIcon>
-
-            <ListItemText primary="Transactions" />
-        </ListItemButton>
-
-        <ListItemButton
-            LinkComponent={Link}
-            href={'/admin/dashboard/places'}
-        >
-            <ListItemIcon>
-                <Festival />
-            </ListItemIcon>
-
-            <ListItemText primary="Wisata" />
-
-        </ListItemButton>
-
-        <ListItemButton
-            LinkComponent={Link}
-            href={'/admin/dashboard/tickets'}
-        >
-            <ListItemIcon>
-                <Receipt />
-            </ListItemIcon>
-
-            <ListItemText primary="Tiket" />
-        </ListItemButton>
-
-        <ListItemButton
-            LinkComponent={Link}
-            href={'/admin/dashboard/reviews'}
-        >
-            <ListItemIcon>
-                <Comment />
-            </ListItemIcon>
-
-            <ListItemText primary="Review" />
-
-        </ListItemButton>
-
-    </>
-);
-
 const LayoutAdmin = (props: LayoutAdminProps) => {
 
+    const router = useRouter()
     const [open, setOpen] = useState(true)
     const toogleDrawer = () => {
         setOpen(prev => !prev)
     }
+
+    const handleClickLogoutButton = async () => {
+        await fetch('/api/admins/logout')
+        router.replace({
+            pathname: '/admin',
+            query: {
+                logout: true
+            }
+        })
+    }
+
+
+    const mainListItems = (
+        <>
+            <Link
+                href={'/admin/dashboard'}
+            >
+                <ListItemButton>
+                    <ListItemIcon>
+                        <Dashboard />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Dashboard" />
+                </ListItemButton>
+            </Link>
+
+            <Link
+                href={'/admin/dashboard/transactions'}
+            >
+                <ListItemButton>
+                    <ListItemIcon>
+                        <Paid />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Transactions" />
+                </ListItemButton>
+            </Link>
+
+            <Link
+                href={'/admin/dashboard/places'}>
+                <ListItemButton>
+
+                    <ListItemIcon>
+                        <Festival />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Wisata" />
+
+                </ListItemButton>
+            </Link>
+
+            <Link
+                href={'/admin/dashboard/tickets'}
+            >
+                <ListItemButton>
+                    <ListItemIcon>
+                        <Receipt />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Tiket" />
+                </ListItemButton>
+            </Link>
+
+            <Link
+                href={'/admin/dashboard/reviews'}
+            >
+                <ListItemButton >
+                    <ListItemIcon>
+                        <Comment />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Review" />
+
+                </ListItemButton>
+            </Link>
+
+        </>
+    )
 
     return (
         <>
@@ -146,7 +161,9 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
                         {mainListItems}
                         <Divider sx={{ my: 1 }} />
 
-                        <ListItemButton>
+                        <ListItemButton
+                            onClick={handleClickLogoutButton}
+                        >
                             <ListItemIcon>
                                 <Logout />
                             </ListItemIcon>
