@@ -1,10 +1,11 @@
-import React, { useState, Suspense } from "react";
+import React, { useState } from "react";
 import Link from "next/link"
 import { Container, Avatar, Typography, Box, TextField, Grid } from "@mui/material"
 import { LoadingButton } from "@mui/lab";
 import { Copyright } from "../footer";
 import { useRouter } from "next/router";
 import { Login } from "@mui/icons-material";
+import { useEmailInput, usePasswordInput } from "@/components/hooks";
 
 interface ErrorType {
     email?: string
@@ -18,67 +19,42 @@ interface JSONResponse {
 
 const LoginPage = () => {
 
-    const regx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const router = useRouter()
+    const { email,
+        emailErrorStatus,
+        emailErrorText,
+        handleChangeEmail,
+        handleChangeErrorStatus,
+        handleChangeErrorText } = useEmailInput({})
 
-    const [emailErrorText, setEmailErrorText] = useState('')
-    const [passwordErrorText, setPasswordErrorText] = useState('')
-    const [emailErrorStatus, setEmailErrorStatus] = useState(false)
-    const [passwordErrorStatus, setPasswordErrorSatatus] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const {
+        password,
+        passwordErrorStatus,
+        passwordErrorText,
+        handleChangeErrorPasswordStatus,
+        handleChangePassword,
+        handleChangeErrorPasswordText
+
+    } = usePasswordInput()
+
     const [loadingStatus, setLoadingStatus] = useState(false)
 
-    const handleErrorEmail = (currentEmail: string) => {
-
-        if (!regx.test(currentEmail) && currentEmail !== '') {
-            setEmailErrorStatus(true)
-            setEmailErrorText('Invalid Email')
-        } else if (currentEmail === '' || regx.test(currentEmail)) {
-            setEmailErrorStatus(false)
-            setEmailErrorText('')
-        }
-    }
-
-    const handleErrorPassword = (currentPassword: string) => {
-
-        if (currentPassword.length < 6 && currentPassword !== '') {
-            setPasswordErrorSatatus(true)
-            setPasswordErrorText('Password tidak kurang dari 6 karakter')
-        } else if (currentPassword === '' || !(currentPassword.length < 6)) {
-            setPasswordErrorSatatus(false)
-            setPasswordErrorText('')
-        }
-
-    }
-
-    const handleChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const currentEmail = e.target.value
-        handleErrorEmail(currentEmail)
-        setEmail(currentEmail)
-    }
-
-    const handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const currentPassword = e.target.value
-        handleErrorPassword(currentPassword)
-        setPassword(currentPassword)
-    }
 
     const handleErrorSubmit = (err: ErrorType) => {
         if (err.password) {
-            setPasswordErrorSatatus(true)
-            setPasswordErrorText(err.password)
+            handleChangeErrorPasswordStatus(true)
+            handleChangeErrorPasswordText(err.password)
         } else {
-            setPasswordErrorSatatus(false)
-            setPasswordErrorText('')
+            handleChangeErrorPasswordStatus(false)
+            handleChangeErrorPasswordText('')
         }
 
         if (err.email) {
-            setEmailErrorStatus(true)
-            setEmailErrorText(err.email)
+            handleChangeErrorStatus(true)
+            handleChangeErrorText(err.email)
         } else {
-            setEmailErrorStatus(false)
-            setEmailErrorText('')
+            handleChangeErrorStatus(false)
+            handleChangeErrorText('')
         }
 
     }
@@ -128,14 +104,9 @@ const LoginPage = () => {
                         src="/national-monument-jakarta.png"
                     />
 
-                    <Suspense
-                        fallback={<div>...loading</div>}
-                    >
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                    </Suspense>
-
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
 
                     <Box
                         component="form"

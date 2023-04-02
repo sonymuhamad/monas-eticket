@@ -2,8 +2,8 @@ import Head from "next/head"
 import LoginPage from "@/components/components/admin/login"
 import { withSessionSsr } from "../../../lib/config/withSession"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { Snackbar, Alert } from "@mui/material"
+import React, { useEffect, useState } from "react"
+import { Snackbar, Alert, AlertTitle } from "@mui/material"
 
 const AdminPage = () => {
 
@@ -12,7 +12,7 @@ const AdminPage = () => {
 
     useEffect(() => {
 
-        if (router.query.logout) {
+        if (router.query.message) {
             setOpenLogoutAlert(true)
         }
 
@@ -43,10 +43,14 @@ const AdminPage = () => {
             >
                 <Alert
                     onClose={handleClose}
-                    severity="success"
+                    severity="info"
+                    variant="outlined"
                     sx={{ width: '100%' }}
                 >
-                    Logout Success
+                    <AlertTitle>
+                        {router.query.type}
+                    </AlertTitle>
+                    {router.query.message}
                 </Alert>
             </Snackbar>
 
@@ -60,7 +64,7 @@ export default AdminPage
 const getServerSideProps = withSessionSsr(
 
     async function getServerSideProps({ req }) {
-        const adminId = req.session.userId
+        const adminId = req.session.adminId
 
         if (adminId) {
             return {

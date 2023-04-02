@@ -16,17 +16,17 @@ module.exports = {
     await queryInterface.bulkInsert('admin', [
       {
         username: 'Sony',
-        email: 'sony@gmail.com',
+        email: 'namaakusony@gmail.com',
         password: await bcrypt.hash('918256', 10)
       },
       {
         username: 'Lucia',
-        email: 'lucia@gmail.com',
+        email: 'namaguasony@gmail.com',
         password: await bcrypt.hash('918256', 10)
       },
       {
         username: 'LuciaSony',
-        email: 'luciasony@gmail.com',
+        email: 'acungptabals@gmail.com',
         password: await bcrypt.hash('918256', 10)
       }
     ])
