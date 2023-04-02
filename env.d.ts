@@ -4,5 +4,6 @@ namespace NodeJS {
         DB_HOST: string
         DB_PASS: string
         DB_USER: string
+        CHIPERKEY: string
     }
 }
