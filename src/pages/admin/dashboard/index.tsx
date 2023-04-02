@@ -1,12 +1,25 @@
 import LayoutAdmin from "@/components/components/admin/layout"
 import { NextPageWithLayout } from "../../_app"
-import React, { ReactElement } from "react"
+import React, { ReactElement, useState } from "react"
+import { withSessionSsr } from "../../../../lib/config/withSession"
+import Admin from "../../../../models/admin"
 
-const DashboardPage: NextPageWithLayout = () => {
+type AdminProps = {
+    username?: string
+    email?: string
+}
+
+const DashboardPage: NextPageWithLayout = (props: AdminProps) => {
 
     return (
         <>
+
             <h1>Hello From Dashboard Admin</h1>
+            <h2>
+                {props.username}
+            </h2>
+            <h3>{props.email}</h3>
+
         </>
     )
 }
@@ -18,3 +31,30 @@ DashboardPage.getLayout = (dashboardPage: ReactElement) => (
 )
 
 export default DashboardPage
+
+export const getServerSideProps = withSessionSsr(
+
+    async function getServerSideProps({ req }) {
+        const loggedAdmin = req.session.adminId
+
+        if (loggedAdmin) {
+            const admin = await Admin.findByPk(loggedAdmin)
+
+            if (admin) {
+                const { username, email } = admin
+                return {
+                    props: {
+                        username: username,
+                        email: email
+                    }
+                }
+            }
+        }
+
+        return {
+            notFound: true
+        }
+
+    }
+
+)
