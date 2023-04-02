@@ -1,13 +1,15 @@
-import { Box, Toolbar, List, Typography, Divider, Container, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
-import { useState } from "react"
+import { Box, Toolbar, List, Typography, Divider, Container, ListItemButton, ListItemIcon, ListItemText, } from "@mui/material"
+import React, { useState } from "react"
 
 import { IconButton } from "@mui/material"
-import { Menu, Dashboard, ChevronLeft, Logout, Receipt, Paid, Festival, Comment } from "@mui/icons-material"
-import Link from "next/link"
+import { ChevronLeft, Logout, ChevronRight, ManageAccounts } from "@mui/icons-material"
 import { useRouter } from "next/router"
+import Link from "next/link"
 import Footer from "../footer"
 import CustomAppBar from "./custom_bar"
 import CustomDrawer from "./custom_drawer"
+import MainListItems from "./list-item"
+
 
 interface LayoutAdminProps {
     children: React.ReactElement
@@ -16,6 +18,7 @@ interface LayoutAdminProps {
 const LayoutAdmin = (props: LayoutAdminProps) => {
 
     const router = useRouter()
+    const { pathname } = router
     const [open, setOpen] = useState(true)
     const toogleDrawer = () => {
         setOpen(prev => !prev)
@@ -26,78 +29,13 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
         router.replace({
             pathname: '/admin',
             query: {
-                logout: true
+                message: 'Logout Success',
+                type: 'success'
             }
         })
     }
 
 
-    const mainListItems = (
-        <>
-            <Link
-                href={'/admin/dashboard'}
-            >
-                <ListItemButton>
-                    <ListItemIcon>
-                        <Dashboard />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Dashboard" />
-                </ListItemButton>
-            </Link>
-
-            <Link
-                href={'/admin/dashboard/transactions'}
-            >
-                <ListItemButton>
-                    <ListItemIcon>
-                        <Paid />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Transactions" />
-                </ListItemButton>
-            </Link>
-
-            <Link
-                href={'/admin/dashboard/places'}>
-                <ListItemButton>
-
-                    <ListItemIcon>
-                        <Festival />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Wisata" />
-
-                </ListItemButton>
-            </Link>
-
-            <Link
-                href={'/admin/dashboard/tickets'}
-            >
-                <ListItemButton>
-                    <ListItemIcon>
-                        <Receipt />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Tiket" />
-                </ListItemButton>
-            </Link>
-
-            <Link
-                href={'/admin/dashboard/reviews'}
-            >
-                <ListItemButton >
-                    <ListItemIcon>
-                        <Comment />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Review" />
-
-                </ListItemButton>
-            </Link>
-
-        </>
-    )
 
     return (
         <>
@@ -127,7 +65,7 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
                                 ...(open && { display: 'none' })
                             }}
                         >
-                            <Menu />
+                            <ChevronRight />
                         </IconButton>
                         <Typography
                             component="h1"
@@ -136,7 +74,7 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            Admin Dashboard
                         </Typography>
                     </Toolbar>
 
@@ -158,11 +96,31 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
                     <Divider />
 
                     <List component="nav">
-                        {mainListItems}
+                        <MainListItems
+                            pathname={pathname}
+                        />
+
                         <Divider sx={{ my: 1 }} />
+                        <Link
+                            href={'/admin/dashboard/profile'}
+                        >
+                            <ListItemButton
+                                selected={/\/admin\/dashboard\/profile/.test(pathname)}
+                            >
+                                <ListItemIcon>
+                                    <ManageAccounts />
+                                </ListItemIcon>
+
+                                <ListItemText primary="Profile" />
+                            </ListItemButton>
+                        </Link>
+
 
                         <ListItemButton
                             onClick={handleClickLogoutButton}
+                            sx={{
+                                color: '#ff6961'
+                            }}
                         >
                             <ListItemIcon>
                                 <Logout />
@@ -194,9 +152,9 @@ const LayoutAdmin = (props: LayoutAdminProps) => {
 
                         {props.children}
 
-                        <Footer />
 
                     </Container>
+                    <Footer />
 
                 </Box>
             </Box>
