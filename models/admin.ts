@@ -7,11 +7,14 @@ import {
     CreationOptional
 } from "sequelize";
 const bcrypt = require('bcrypt')
-
+const CryptoJS = require('crypto-js')
+const nodemailer = require('nodemailer')
 const sequelize = new Sequelize('monas-eticket', 'root', '918256ccd741;', {
     host: 'localhost',
     dialect: 'mysql'
 })
+
+import { getEmailTemplate } from "@/components/external";
 
 class Admin extends Model<InferAttributes<Admin>, InferCreationAttributes<Admin>>{
 
@@ -22,10 +25,45 @@ class Admin extends Model<InferAttributes<Admin>, InferCreationAttributes<Admin>
     declare created_at: CreationOptional<Date>
     declare updated_at: CreationOptional<Date>
 
+    setNewPassword = async (newPassword: string) => {
+        if (newPassword.length < 6) {
+            return { error: "Password minimal 6 karakter" }
+        }
+        this.password = await bcrypt.hash(newPassword, 10)
+        await this.save()
+        return { ok: true }
+    }
+
     valid_password = async (password: string) => {
         return await bcrypt.compare(password, this.password)
     }
 
+    generateChiperText = () => {
+        const chipText = CryptoJS.AES.encrypt(String(this.id), process.env.CHIPERKEY)
+        this.sendEmail(chipText.toString().replace('+', 'xMl3Jk').replace('/', 'Por21Ld').replace('=', 'Ml32'))
+    }
+
+    sendEmail = async (hashedId: string) => {
+
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'sonyfadhil11@gmail.com',
+                pass: 'mkvgvrnqoxbgyqmi',
+            },
+        });
+
+        await transporter.sendMail({
+            from: 'sonyfadhil11@gmail.com',
+            to: this.email,
+            subject: "Set new password from Monas E-ticket",
+            text: `Reset Password Processes`,
+            html: getEmailTemplate({ hashedId }),
+
+        })
+    }
 
 }
 
@@ -63,8 +101,8 @@ Admin.init(
             allowNull: false,
             validate: {
                 minCharacter(value: string) {
-                    if (value.length < 8) {
-                        throw new Error('Password harus minimal 8 karakter')
+                    if (value.length < 6) {
+                        throw new Error('Password harus minimal 6 karakter')
                     }
                 }
             },
