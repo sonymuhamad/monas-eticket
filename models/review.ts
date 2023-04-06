@@ -1,13 +1,16 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import { Sequelize, DataTypes, Model, Attributes, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
     dialect: 'mysql'
 })
 
-
-class Review extends Model {
-    declare id_review: number
+class Review extends Model<InferAttributes<Review>, InferCreationAttributes<Review>> {
+    declare id_review: CreationOptional<number>
+    declare name: string
+    declare text: string
+    declare avatar: string
+    declare shown: boolean
 }
 
 Review.init({
@@ -29,13 +32,17 @@ Review.init({
             }
         }
     },
-    review_text: {
+    text: {
         type: DataTypes.TEXT,
         allowNull: false,
     },
     avatar: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    shown: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 
 }, {
@@ -45,3 +52,6 @@ Review.init({
 
 
 export default Review
+
+export type ReviewProps = Attributes<Review>
+
