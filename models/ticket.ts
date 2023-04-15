@@ -1,9 +1,19 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize, DataTypes, Model, InferAttributes, CreationOptional, InferCreationAttributes, Attributes } from "sequelize";
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
     dialect: 'mysql'
 })
+
+interface Ticket extends Model<InferAttributes<Ticket>, InferCreationAttributes<Ticket>> {
+    id_ticket: CreationOptional<number>
+    name: string
+    price: number
+    discount: number
+    terms: string
+    how_to_use: string
+    actual_price: number
+}
 
 const Ticket = sequelize.define('Ticket', {
     id_ticket: {
@@ -12,7 +22,7 @@ const Ticket = sequelize.define('Ticket', {
         primaryKey: true
     },
     name: {
-        type: new DataTypes.STRING(255),
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             minCharacter(value: string) {
@@ -34,7 +44,11 @@ const Ticket = sequelize.define('Ticket', {
     actual_price: {
         type: DataTypes.VIRTUAL,
         get() {
-            const discountPriced = (this.getDataValue('discount') / this.getDataValue('price')) * 100
+            if (this.getDataValue('discount') === 0) {
+                return this.getDataValue('price')
+            }
+
+            const discountPriced = (this.getDataValue('discount') / 100) * this.getDataValue('price')
             return this.getDataValue('price') - discountPriced
         },
         set(value) {
@@ -48,8 +62,10 @@ const Ticket = sequelize.define('Ticket', {
         type: DataTypes.TEXT
     },
 }, {
-
+    tableName: "tickets"
 })
+
+export type TicketProps = Attributes<Ticket>
 
 export { Ticket }
 
