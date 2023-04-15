@@ -1,11 +1,11 @@
-import { useState, useMemo } from "react"
+import React, { useState, useMemo, Suspense } from "react"
 import { NextPageWithLayout } from "../../_app"
 import LayoutAdmin from "@/components/components/admin/layout"
 import { withSessionSsr } from "../../../../lib/config/withSession"
 
 import Review, { ReviewProps } from "../../../../models/review"
 
-import { Box, Paper, Typography, Grid, Badge, Avatar, TextField, InputAdornment, Button, IconButton, Divider, Modal, FormControlLabel, Checkbox, Alert, Snackbar } from "@mui/material"
+import { Box, Paper, Typography, Grid, Badge, Avatar, TextField, InputAdornment, Button, IconButton, Divider, Modal, FormControlLabel, Checkbox, Alert, Snackbar, Skeleton } from "@mui/material"
 import { FormatQuote, Search, AddComment, Edit, DeleteForever, SaveAlt, Photo } from "@mui/icons-material"
 
 import { TextareaAutosize } from "@mui/material"
@@ -745,7 +745,70 @@ const AdminReviews: NextPageWithLayout<Props> = ({ data }: Props) => {
     )
 }
 
-AdminReviews.getLayout = (reviewPage) => (<LayoutAdmin>{reviewPage}</LayoutAdmin>)
+const LoadingSkeletons = () => {
+
+    return (
+        <Grid
+            container
+            spacing={2}
+        >
+
+            <Grid
+                md={4}
+                sm={6}
+                xs={12}
+                item
+                justifyContent={'center'}
+            >
+                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton sx={{ height: 150 }} animation="wave" variant="rectangular" />
+                <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+                <Skeleton animation="wave" height={10} width="80%" />
+            </Grid>
+
+            <Grid
+                md={4}
+                sm={6}
+                xs={12}
+                item
+                justifyContent={'center'}
+            >
+                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton sx={{ height: 150 }} animation="wave" variant="rectangular" />
+                <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+                <Skeleton animation="wave" height={10} width="80%" />
+            </Grid>
+
+            <Grid
+                md={4}
+                sm={6}
+                xs={12}
+                item
+                justifyContent={'center'}
+            >
+                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton sx={{ height: 150 }} animation="wave" variant="rectangular" />
+                <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+                <Skeleton animation="wave" height={10} width="80%" />
+            </Grid>
+
+        </Grid>
+    )
+}
+
+AdminReviews.getLayout = (reviewPage) => {
+
+    return (
+        <LayoutAdmin>
+
+            <Suspense fallback={<LoadingSkeletons />} >
+                {reviewPage}
+            </Suspense>
+
+        </LayoutAdmin>
+
+    )
+}
 
 
 
