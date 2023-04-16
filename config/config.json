@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "918256ccd741;",
+    "password": "918256Ccd741;",
     "database": "monas-eticket",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "918256ccd741;",
+    "password": "918256Ccd741;",
     "database": "monas-eticket",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "918256ccd741;",
+    "password": "918256Ccd741;",
     "database": "monas-eticket",
     "host": "localhost",
     "dialect": "mysql"
