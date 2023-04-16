@@ -1,18 +1,17 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-
-    await queryInterface.createTable('tickets', {
+    await queryInterface.createTable("tickets", {
       id_ticket: {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       name: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       price: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -21,15 +20,22 @@ module.exports = {
       discount: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       terms: Sequelize.DataTypes.TEXT,
-      how_to_use: Sequelize.DataTypes.TEXT
-    })
-
+      how_to_use: Sequelize.DataTypes.TEXT,
+      createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+      updatedAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+    });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('tickets')
-  }
+    await queryInterface.dropTable("tickets");
+  },
 };
