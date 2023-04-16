@@ -521,8 +521,9 @@ const HistoryPage: NextPageWithLayout = () => {
               serta melambangkan malam hari. Lingga dan yoni merupakan lambang
               kesuburan dan kesatuan harmonis yang saling melengkapi sedari masa
               prasejarah Indonesia. Bentuk Tugu Monas juga dapat ditafsirkan
-              sebagai sepasang "alu" dan "Lesung", alat penumbuk padi yang
-              didapati dalam setiap rumah tangga petani tradisional Indonesia.
+              sebagai sepasang &ldquo;alu&ldquo; dan &ldquo;Lesung&ldquo;, alat
+              penumbuk padi yang didapati dalam setiap rumah tangga petani
+              tradisional Indonesia.
             </Typography>
           </Grid>
         </Grid>
