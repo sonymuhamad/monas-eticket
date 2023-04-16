@@ -13,84 +13,38 @@ import {
   StepContent,
   Button,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import Image from "next/image";
-
-const useStyles = makeStyles(() => ({
-  container: {
-    opacity: 1,
-    mixBlendMode: "normal",
-    backgroundColor: "rgba(67, 134, 189, 1)",
-    alignItems: "inherit",
-    display: "flex",
-    flexDirection: "column",
-    gap: "40px",
-    justifyContent: "flex-start",
-    borderRadius: "10px",
-    padding: 10,
-  },
-  itemContainer: {
-    opacity: 1,
-    mixBlendMode: "normal",
-    alignItems: "inherit",
-  },
-  title: {
-    lineHeight: "108.52272510528564%",
-    letterSpacing: "0%",
-    marginBottom: "15px",
-    textTransform: "none",
-    textAlign: "center",
-    verticalAlign: "top",
-    fontFamily: "Inter",
-    fontSize: "16px",
-    color: "#000000",
-    fontWeight: 500,
-    width: "100%",
-  },
-  subtitle: {
-    lineHeight: "108.52272510528564%",
-    letterSpacing: "0%",
-    marginBottom: "15px",
-    textTransform: "none",
-    textAlign: "center",
-    verticalAlign: "top",
-    fontFamily: "Inter",
-    fontSize: "18px",
-    color: "#000000",
-    fontWeight: 500,
-    width: "100%",
-    height: "100%",
-  },
-  divider: {
-    opacity: 1,
-    mixBlendMode: "normal",
-    borderColor: "#000000",
-    borderWidth: "3px",
-    borderStyle: "solid",
-    borderRadius: "10px",
-  },
-}));
+import {} from "@mui/material";
 
 const HistoryPage: NextPageWithLayout = () => {
-  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(1);
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
   return (
     <>
       <Head>
         <title>Monas | History</title>
       </Head>
 
-      <Box className={classes.container}>
+      <Box
+        sx={{
+          opacity: 1,
+          mixBlendMode: "normal",
+          backgroundColor: "rgba(67, 134, 189, 1)",
+          alignItems: "inherit",
+          display: "flex",
+          flexDirection: "column",
+          gap: "40px",
+          justifyContent: "flex-start",
+          borderRadius: "10px",
+          padding: 10,
+        }}
+      >
         <Grid container spacing={4}>
           <Grid item sm={6} xs={12}>
             <Typography component={"h1"} variant="h2" color={"#FFFFFF"}>
@@ -108,25 +62,211 @@ const HistoryPage: NextPageWithLayout = () => {
 
           <Grid item sm={6} xs={12}>
             <div>
-              <div className={classes.itemContainer}>
-                <p className={classes.title}>Th1945</p>
-                <div className={classes.divider}></div>
-                <p className={classes.subtitle}>Kemerdekaan Indonesia</p>
+              <div>
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "16px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                  }}
+                >
+                  Th1945
+                </p>
+                <div
+                  style={{
+                    opacity: 1,
+                    mixBlendMode: "normal",
+                    borderColor: "#000000",
+                    borderWidth: "3px",
+                    borderStyle: "solid",
+                    borderRadius: "10px",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "18px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  Kemerdekaan Indonesia
+                </p>
               </div>
-              <div className={classes.itemContainer}>
-                <p className={classes.title}>Th1961</p>
-                <div className={classes.divider}></div>
-                <p className={classes.subtitle}>Pembangunan Monas Tahap 1</p>
+              <div
+                style={{
+                  opacity: 1,
+                  mixBlendMode: "normal",
+                  alignItems: "inherit",
+                }}
+              >
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "16px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                  }}
+                >
+                  Th1961
+                </p>
+                <div
+                  style={{
+                    opacity: 1,
+                    mixBlendMode: "normal",
+                    borderColor: "#000000",
+                    borderWidth: "3px",
+                    borderStyle: "solid",
+                    borderRadius: "10px",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "18px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  Pembangunan Monas Tahap 1
+                </p>
               </div>
-              <div className={classes.itemContainer}>
-                <p className={classes.title}>Th1966</p>
-                <div className={classes.divider}></div>
-                <p className={classes.subtitle}>Pembangunan Monas Tahap 2</p>
+              <div
+                style={{
+                  opacity: 1,
+                  mixBlendMode: "normal",
+                  alignItems: "inherit",
+                }}
+              >
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "16px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                  }}
+                >
+                  Th1966
+                </p>
+                <div
+                  style={{
+                    opacity: 1,
+                    mixBlendMode: "normal",
+                    borderColor: "#000000",
+                    borderWidth: "3px",
+                    borderStyle: "solid",
+                    borderRadius: "10px",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "18px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  Pembangunan Monas Tahap 2
+                </p>
               </div>
-              <div className={classes.itemContainer}>
-                <p className={classes.title}>Th1969</p>
-                <div className={classes.divider}></div>
-                <p className={classes.subtitle}>Pembangunan Monas Tahap 3</p>
+              <div
+                style={{
+                  opacity: 1,
+                  mixBlendMode: "normal",
+                  alignItems: "inherit",
+                }}
+              >
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "16px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                  }}
+                >
+                  Th1969
+                </p>
+                <div
+                  style={{
+                    opacity: 1,
+                    mixBlendMode: "normal",
+                    borderColor: "#000000",
+                    borderWidth: "3px",
+                    borderStyle: "solid",
+                    borderRadius: "10px",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    lineHeight: "108.52272510528564%",
+                    letterSpacing: "0%",
+                    marginBottom: "15px",
+                    textTransform: "none",
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    fontFamily: "Inter",
+                    fontSize: "18px",
+                    color: "#000000",
+                    fontWeight: 500,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  Pembangunan Monas Tahap 3
+                </p>
               </div>
             </div>
           </Grid>
