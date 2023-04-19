@@ -107,12 +107,12 @@ export default function Footer() {
             <Grid item sm={6} xs={12}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.666307543373!2d106.82458402490462!3d-6.175408343811999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2db8c5617%3A0x4e446b7ac891d847!2sMonas%2C%20Gambir%2C%20Kecamatan%20Gambir%2C%20Kota%20Jakarta%20Pusat%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sen!2sid!4v1681631606901!5m2!1sen!2sid"
-                width="400"
-                height="300"
+                width="100%"
+                height="100%"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 style={{
-                  borderRadius: "15px",
+                  borderRadius: "10px",
                 }}
               />
             </Grid>
