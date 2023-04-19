@@ -20,7 +20,7 @@ const Art = () => {
         Wisata Sejarah
       </Typography>
 
-      <Grid container spacing={4}>
+      <Grid container p={5} spacing={4}>
         <Grid item xs={12} md={4}>
           <Card
             sx={{ height: "100%", display: "flex", flexDirection: "column" }}

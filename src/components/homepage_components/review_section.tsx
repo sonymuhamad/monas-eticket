@@ -6,15 +6,22 @@ import {
   Paper,
   Grid,
   Tab,
+  Button,
 } from "@mui/material";
 import { FormatQuote } from "@mui/icons-material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 
 import { PanoramaFishEye } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 const Review = () => {
   const [tabVal, setTabVal] = useState("1");
+  const router = useRouter();
+
+  const onClickBuyTicketButton = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    router.push("/ticket");
+  };
 
   const onChangeTab = (e: React.SyntheticEvent, value: unknown): void => {
     if (value && typeof value === "string") {
@@ -299,6 +306,24 @@ const Review = () => {
               </Grid>
             </Grid>
           </TabContext>
+        </Grid>
+        <Grid
+          display="flex"
+          alignItems={"center"}
+          justifyContent={"center"}
+          sx={{
+            p: 5,
+          }}
+        >
+          <Button
+            variant="contained"
+            LinkComponent="a"
+            onClick={onClickBuyTicketButton}
+            href="/ticket"
+            size="large"
+          >
+            Beli tiket sekarang
+          </Button>
         </Grid>
       </Grid>
     </>

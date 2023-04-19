@@ -18,7 +18,7 @@ import Image from "next/image";
 import {} from "@mui/material";
 
 const HistoryPage: NextPageWithLayout = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -60,216 +60,17 @@ const HistoryPage: NextPageWithLayout = () => {
             </Typography>
           </Grid>
 
-          <Grid item sm={6} xs={12}>
-            <div>
-              <div>
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                  }}
-                >
-                  Th1945
-                </p>
-                <div
-                  style={{
-                    opacity: 1,
-                    mixBlendMode: "normal",
-                    borderColor: "#000000",
-                    borderWidth: "3px",
-                    borderStyle: "solid",
-                    borderRadius: "10px",
-                  }}
-                ></div>
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "18px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  Kemerdekaan Indonesia
-                </p>
-              </div>
-              <div
-                style={{
-                  opacity: 1,
-                  mixBlendMode: "normal",
-                  alignItems: "inherit",
-                }}
-              >
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                  }}
-                >
-                  Th1961
-                </p>
-                <div
-                  style={{
-                    opacity: 1,
-                    mixBlendMode: "normal",
-                    borderColor: "#000000",
-                    borderWidth: "3px",
-                    borderStyle: "solid",
-                    borderRadius: "10px",
-                  }}
-                ></div>
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "18px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  Pembangunan Monas Tahap 1
-                </p>
-              </div>
-              <div
-                style={{
-                  opacity: 1,
-                  mixBlendMode: "normal",
-                  alignItems: "inherit",
-                }}
-              >
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                  }}
-                >
-                  Th1966
-                </p>
-                <div
-                  style={{
-                    opacity: 1,
-                    mixBlendMode: "normal",
-                    borderColor: "#000000",
-                    borderWidth: "3px",
-                    borderStyle: "solid",
-                    borderRadius: "10px",
-                  }}
-                ></div>
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "18px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  Pembangunan Monas Tahap 2
-                </p>
-              </div>
-              <div
-                style={{
-                  opacity: 1,
-                  mixBlendMode: "normal",
-                  alignItems: "inherit",
-                }}
-              >
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                  }}
-                >
-                  Th1969
-                </p>
-                <div
-                  style={{
-                    opacity: 1,
-                    mixBlendMode: "normal",
-                    borderColor: "#000000",
-                    borderWidth: "3px",
-                    borderStyle: "solid",
-                    borderRadius: "10px",
-                  }}
-                ></div>
-                <p
-                  style={{
-                    lineHeight: "108.52272510528564%",
-                    letterSpacing: "0%",
-                    marginBottom: "15px",
-                    textTransform: "none",
-                    textAlign: "center",
-                    verticalAlign: "top",
-                    fontFamily: "Inter",
-                    fontSize: "18px",
-                    color: "#000000",
-                    fontWeight: 500,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  Pembangunan Monas Tahap 3
-                </p>
-              </div>
-            </div>
-          </Grid>
+          <Grid
+            item
+            sm={6}
+            xs={12}
+            sx={{
+              backgroundImage: "url(Roadmap.png)",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "contain",
+              backgroundPosition: "50% 20%",
+            }}
+          ></Grid>
         </Grid>
       </Box>
 
