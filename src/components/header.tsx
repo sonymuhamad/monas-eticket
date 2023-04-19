@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { TabContext, TabList } from "@mui/lab";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 
 type Path = "/" | "/history" | "/place" | "/ticket";
@@ -12,25 +12,21 @@ const Header = () => {
   const [path, setPath] = useState<Path>("/");
   const router = useRouter();
 
-  const updatePath = (strPath: string) => {
-    switch (strPath) {
-      case "/":
-        setPath(strPath);
-        break;
-      case "/history":
-        setPath(strPath);
-        break;
-      case "/place":
-        setPath(strPath);
-        break;
-      case "/ticket":
-        setPath(strPath);
-        break;
-      default:
-        const _exhaustiveDepth = strPath;
-        throw new Error("There is an unhandled route" + _exhaustiveDepth);
+  const updatePath = useCallback((strPath: string) => {
+    if (strPath === "/") {
+      setPath(strPath);
+    } else if (strPath.startsWith("/history")) {
+      setPath("/history");
+    } else if (strPath.startsWith("/place")) {
+      setPath("/place");
+    } else if (strPath.startsWith("/ticket")) {
+      setPath("/ticket");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    updatePath(router.pathname);
+  }, [router.pathname, updatePath]);
 
   const onChangePath = (e: React.SyntheticEvent, value: unknown) => {
     if (value && typeof value === "string") {
