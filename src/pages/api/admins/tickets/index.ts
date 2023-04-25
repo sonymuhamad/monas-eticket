@@ -61,8 +61,6 @@ export default withSessionRoute(async function handler(
       await runMiddleware(req, res, upload.single("image"));
 
       const { body } = req;
-      console.log(body);
-      console.log(typeof body, "typeof body");
       try {
         const createdTicket = await Ticket.create({
           ...body,

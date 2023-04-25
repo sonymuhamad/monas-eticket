@@ -83,7 +83,6 @@ export default withSessionRoute(async function handler(
           const updatedTicket = await ticket.save();
           res.status(200).send({ updatedTicket, ok: true });
         } catch (e) {
-          console.log(e);
           if (e instanceof ValidationError) {
             res.status(400).send({ ok: false, errors: e.errors });
           } else {
