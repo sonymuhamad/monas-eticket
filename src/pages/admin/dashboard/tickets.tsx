@@ -21,8 +21,7 @@ import { Delete, Edit, More, Search } from "@mui/icons-material";
 import { TextareaAutosize } from "@mui/material";
 
 import { Ticket, TicketProps } from "../../../../models/ticket";
-
-import { makeStyles } from "@mui/material";
+import Image from "next/image";
 
 interface Props {
   data: TicketProps[];
@@ -62,6 +61,17 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
   const [termsEditTicket, setTermsEditTicket] = useState("");
   const [howToUseEditTicket, setHowToUseEditTicket] = useState("");
   const [idEditTicket, setIdEditTicket] = useState<null | number>(null);
+  const [imageEditTicket, setImageEditTicket] = useState<File | null>(null);
+  const [imageEditUrl, setImageEditUrl] = useState<string | undefined>(
+    undefined
+  );
+  const [createImageEditUrl, setCreateImageEditUrl] = useState<
+    string | undefined
+  >(undefined);
+
+  const [descriptionEditTicket, setDescriptionEditTicket] = useState<
+    string | undefined
+  >("");
 
   const [wilBeDeletedTicket, setWilBeDeletedTicket] = useState<number | null>(
     null
@@ -79,6 +89,10 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
   const [actualPriceDetailTicket, setActualPriceDetailTicket] = useState<
     number | string
   >("");
+  const [descriptionDetailTicket, setDescriptionDetailTicket] = useState<
+    string | undefined
+  >("");
+  const [imageDetailUrl, setImageDetailUrl] = useState("");
 
   const [nameAddTicket, setNameAddTicket] = useState("");
   const [discountAddTicket, setDiscountAddTicket] = useState<string | number>(
@@ -87,6 +101,11 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
   const [priceAddTicket, setPriceAddTicket] = useState<string | number>("");
   const [termsAddTicket, setTermsAddTicket] = useState("");
   const [howToUseAddTicket, setHowToUseAddTicket] = useState("");
+  const [imageAddTicket, setImageAddTicket] = useState<File | null>(null);
+  const [createImageAddUrl, setCreateImageAddUrl] = useState<
+    string | undefined
+  >(undefined);
+  const [descriptionAddTicket, setDescriptionAddTicket] = useState("");
 
   const setTicketAfterInput = (newTicket: TicketProps) => {
     setTicketList((prev) => [...prev, newTicket]);
@@ -111,14 +130,24 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
 
   const handleClickDetailTicket = (selectedTicket: TicketProps) => {
     setOpenDetailModal(true);
-    const { name, discount, price, how_to_use, terms, actual_price } =
-      selectedTicket;
+    const {
+      name,
+      discount,
+      price,
+      how_to_use,
+      terms,
+      actual_price,
+      description,
+      image,
+    } = selectedTicket;
     setActualPriceDetailTicket(actual_price);
     setNameDetailTicket(name);
     setDiscountDetailTicket(discount);
     setPriceDetailTicket(price);
     setHowToUseDetailTicket(how_to_use);
     setTermsDetailTicket(terms);
+    setDescriptionDetailTicket(description);
+    setImageDetailUrl(image);
   };
 
   const closeDetailTicket = () => {
@@ -129,18 +158,30 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
     setPriceDetailTicket("");
     setHowToUseDetailTicket("");
     setTermsDetailTicket("");
+    setDescriptionDetailTicket("");
+    setImageDetailUrl("");
   };
 
   const handleClickEditTicket = (selectedTicket: TicketProps) => {
     setOpenEditModal(true);
-    const { name, how_to_use, terms, price, discount, id_ticket } =
-      selectedTicket;
+    const {
+      name,
+      how_to_use,
+      terms,
+      price,
+      discount,
+      id_ticket,
+      description,
+      image,
+    } = selectedTicket;
     setIdEditTicket(id_ticket);
     setNameEditTicket(name);
     setHowToUseEditTicket(how_to_use);
     setPriceEditTicket(price);
     setTermsEditTicket(terms);
     setDiscountEditTicket(discount);
+    setDescriptionEditTicket(description);
+    setImageEditUrl(image);
   };
 
   const closeEditTicket = () => {
@@ -151,6 +192,9 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
     setHowToUseEditTicket("");
     setPriceEditTicket("");
     setDiscountEditTicket("");
+    setDescriptionEditTicket("");
+    setImageEditUrl("");
+    setCreateImageEditUrl(undefined);
   };
 
   const handleClickDeleteTicket = (idTicket: number) => {
@@ -170,25 +214,38 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
     setPriceAddTicket(0);
     setHowToUseAddTicket("");
     setDiscountAddTicket(0);
+    setDescriptionAddTicket("");
+    setImageAddTicket(null);
+    setCreateImageAddUrl(undefined);
   };
 
   const handleSubmitAddTicket = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const data = {
-      terms: termsAddTicket,
-      name: nameAddTicket,
-      how_to_use: howToUseAddTicket,
-      price: priceAddTicket,
-      discount: discountAddTicket,
-    };
+
+    const formData = new FormData();
+    if (imageAddTicket) {
+      formData.append("image", imageAddTicket);
+    }
+    formData.append("name", nameAddTicket);
+    formData.append("terms", termsAddTicket);
+    formData.append("how_to_use", howToUseAddTicket);
+    formData.append("price", String(priceAddTicket));
+    formData.append("discount", String(discountAddTicket));
+    formData.append("description", descriptionAddTicket);
 
     const res = await fetch(`/api/admins/tickets`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
     });
 
-    const createdTicket: TicketProps = await res.json();
-    if (createdTicket) {
+    const {
+      ok,
+      createdTicket,
+      errors,
+    }: { ok: boolean; createdTicket: TicketProps; errors: [] } =
+      await res.json();
+    console.log(createdTicket, "Created ticket");
+    if (ok) {
       setTicketAfterInput(createdTicket);
       closeAddModal();
     }
@@ -196,20 +253,35 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
 
   const handleSubmitEditTicket = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const data = {
-      name: nameEditTicket,
-      terms: termsEditTicket,
-      how_to_use: howToUseEditTicket,
-      price: priceEditTicket,
-      discount: discountEditTicket,
-    };
+    const formData = new FormData();
+    if (imageEditTicket) {
+      formData.append("image", imageEditTicket);
+    }
+    formData.append("name", nameEditTicket);
+    formData.append("terms", termsEditTicket);
+    formData.append("how_to_use", howToUseEditTicket);
+    if (priceEditTicket) {
+      formData.append("price", String(priceEditTicket));
+    }
+    if (discountEditTicket) {
+      formData.append("discount", String(discountEditTicket));
+    }
+    if (descriptionEditTicket) {
+      formData.append("description", descriptionEditTicket);
+    }
+
     const res = await fetch(`/api/admins/tickets/${idEditTicket}`, {
       method: "PUT",
-      body: JSON.stringify(data),
+      body: formData,
     });
 
-    const updatedTicket: TicketProps = await res.json();
-    if (updatedTicket) {
+    const {
+      ok,
+      updatedTicket,
+      errors,
+    }: { ok: boolean; updatedTicket: TicketProps; errors: [] } =
+      await res.json();
+    if (ok) {
       setTicketAfterUpdate(updatedTicket);
       closeEditTicket();
     }
@@ -331,10 +403,9 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
         {/* Modal Edit Ticket */}
         <Modal
           sx={{
-            overflow: "scroll",
+            overflow: "auto",
             height: "100%",
             position: "absolute",
-            top: "10%",
           }}
           open={openEditModal}
           onClose={closeEditTicket}
@@ -343,7 +414,7 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
           <Box
             sx={{
               position: "absolute" as "absolute",
-              top: "50%",
+              top: "100%",
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 600,
@@ -409,13 +480,35 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                   mb: 2,
                 }}
               >
+                <FormLabel>Description</FormLabel>
+
+                <TextareaAutosize
+                  style={{
+                    width: 550,
+                    padding: 5,
+                  }}
+                  id="description"
+                  minRows={4}
+                  maxRows={15}
+                  value={descriptionEditTicket}
+                  onChange={(e) => setDescriptionEditTicket(e.target.value)}
+                />
+              </FormControl>
+
+              <FormControl
+                sx={{
+                  mb: 2,
+                }}
+              >
                 <FormLabel>Syarat dan ketentuan</FormLabel>
 
                 <TextareaAutosize
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   id="terms"
+                  maxRows={15}
                   minRows={4}
                   value={termsEditTicket}
                   onChange={(e) => setTermsEditTicket(e.target.value)}
@@ -430,14 +523,50 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                 <FormLabel>Cara penggunaan</FormLabel>
                 <TextareaAutosize
                   id="howToUse"
+                  maxRows={15}
                   minRows={4}
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   value={howToUseEditTicket}
                   onChange={(e) => setHowToUseEditTicket(e.target.value)}
                 />
               </FormControl>
+
+              <Image
+                width={300}
+                height={200}
+                src={
+                  createImageEditUrl
+                    ? createImageEditUrl
+                    : `/ticket-images/${imageEditUrl}`
+                }
+                alt="Image-detail-ticket"
+              />
+
+              <Button
+                variant="text"
+                aria-label="edit avatar"
+                component="label"
+                sx={{
+                  my: 5,
+                }}
+              >
+                Upload
+                <input
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const image = e.target.files[0];
+                      setImageEditTicket(image);
+                      setCreateImageEditUrl(URL.createObjectURL(image));
+                    }
+                  }}
+                  hidden
+                  accept="image/*"
+                  type="file"
+                />
+              </Button>
 
               <Button
                 type="submit"
@@ -508,7 +637,6 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
             overflow: "scroll",
             height: "100%",
             position: "absolute",
-            top: "10%",
           }}
           open={openDetailModal}
           onClose={closeDetailTicket}
@@ -516,8 +644,8 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
         >
           <Box
             sx={{
-              position: "absolute" as "absolute",
-              top: "50%",
+              position: "absolute",
+              top: "100%",
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 600,
@@ -600,14 +728,35 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                   mb: 2,
                 }}
               >
+                <FormLabel>Description</FormLabel>
+                <TextareaAutosize
+                  readOnly={true}
+                  id="description"
+                  minRows={4}
+                  maxRows={15}
+                  style={{
+                    width: 550,
+                    padding: 5,
+                  }}
+                  value={descriptionDetailTicket}
+                />
+              </FormControl>
+
+              <FormControl
+                sx={{
+                  mb: 2,
+                }}
+              >
                 <FormLabel>Syarat dan ketentuan</FormLabel>
 
                 <TextareaAutosize
                   id="terms"
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   minRows={4}
+                  maxRows={15}
                   value={termsDetailTicket}
                   readOnly={true}
                 />
@@ -623,12 +772,21 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                   readOnly={true}
                   id="howToUse"
                   minRows={4}
+                  maxRows={15}
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   value={howToUseDetailTicket}
                 />
               </FormControl>
+
+              <Image
+                width={300}
+                height={200}
+                src={`/ticket-images/${imageDetailUrl}`}
+                alt="Image-detail-ticket"
+              />
             </Box>
           </Box>
         </Modal>
@@ -639,17 +797,16 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
           open={openAddModal}
           onClose={closeAddModal}
           sx={{
-            overflow: "scroll",
+            overflow: "auto",
             height: "100%",
             position: "absolute",
-            top: "10%",
           }}
           aria-labelledby="modal-tambah-tiket"
         >
           <Box
             sx={{
               position: "absolute" as "absolute",
-              top: "50%",
+              top: "100%",
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 600,
@@ -715,14 +872,36 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                   mb: 2,
                 }}
               >
+                <FormLabel>Description</FormLabel>
+
+                <TextareaAutosize
+                  style={{
+                    width: 550,
+                    padding: 5,
+                  }}
+                  id="description"
+                  minRows={4}
+                  maxRows={15}
+                  value={descriptionAddTicket}
+                  onChange={(e) => setDescriptionAddTicket(e.target.value)}
+                />
+              </FormControl>
+
+              <FormControl
+                sx={{
+                  mb: 2,
+                }}
+              >
                 <FormLabel>Syarat dan ketentuan</FormLabel>
 
                 <TextareaAutosize
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   id="terms"
                   minRows={4}
+                  maxRows={15}
                   value={termsAddTicket}
                   onChange={(e) => setTermsAddTicket(e.target.value)}
                 />
@@ -736,14 +915,48 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
                 <FormLabel>Cara penggunaan</FormLabel>
                 <TextareaAutosize
                   id="howToUse"
+                  maxRows={15}
                   minRows={4}
                   style={{
-                    width: 500,
+                    width: 550,
+                    padding: 5,
                   }}
                   value={howToUseAddTicket}
                   onChange={(e) => setHowToUseAddTicket(e.target.value)}
                 />
               </FormControl>
+
+              {createImageAddUrl && (
+                <Image
+                  width={300}
+                  height={200}
+                  src={createImageAddUrl}
+                  alt="Ticket-image"
+                />
+              )}
+
+              <Button
+                variant="text"
+                aria-label="add-images"
+                component="label"
+                sx={{
+                  my: 5,
+                }}
+              >
+                Upload Image
+                <input
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const image = e.target.files[0];
+                      setImageAddTicket(image);
+                      setCreateImageAddUrl(URL.createObjectURL(image));
+                    }
+                  }}
+                  hidden
+                  accept="image/*"
+                  type="file"
+                />
+              </Button>
 
               <Button
                 type="submit"
