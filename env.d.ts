@@ -1,9 +1,11 @@
 namespace NodeJS {
-    interface ProcessEnv {
-        DB_NAME: string
-        DB_HOST: string
-        DB_PASS: string
-        DB_USER: string
-        CHIPERKEY: string
-    }
+  interface ProcessEnv {
+    DB_NAME: string;
+    DB_HOST: string;
+    DB_PASS: string;
+    DB_USER: string;
+    CHIPERKEY: string;
+    SERVERKEY: string;
+    CLIENTKEY: string;
+  }
 }
