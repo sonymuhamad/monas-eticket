@@ -92,7 +92,7 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
   const [descriptionDetailTicket, setDescriptionDetailTicket] = useState<
     string | undefined
   >("");
-  const [imageDetailUrl, setImageDetailUrl] = useState("");
+  const [imageDetailUrl, setImageDetailUrl] = useState<string | undefined>("");
 
   const [nameAddTicket, setNameAddTicket] = useState("");
   const [discountAddTicket, setDiscountAddTicket] = useState<string | number>(
