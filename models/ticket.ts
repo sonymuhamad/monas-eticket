@@ -27,11 +27,11 @@ interface Ticket
   terms: string;
   how_to_use: string;
   actual_price: number;
-  image: string;
+  image?: string;
   description: string;
 }
 
-const Ticket = sequelize.define(
+const Ticket = sequelize.define<Ticket>(
   "Ticket",
   {
     id_ticket: {
@@ -68,7 +68,7 @@ const Ticket = sequelize.define(
 
         const discountPriced =
           (this.getDataValue("discount") / 100) * this.getDataValue("price");
-        return this.getDataValue("price") - discountPriced;
+        return Math.ceil(this.getDataValue("price") - discountPriced);
       },
       set(value) {
         throw new Error("Actual price cannot be set");

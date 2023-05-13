@@ -1,6 +1,23 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import {
+  Sequelize,
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  Attributes,
+  ForeignKey,
+  HasManyCreateAssociationMixin,
+  HasManyAddAssociationMixin,
+  Association,
+  BelongsToCreateAssociationMixin,
+  HasManyGetAssociationsMixin,
+} from "sequelize";
+const nodemailer = require("nodemailer");
 
 import { Ticket } from "./ticket";
+import { getEmailVerificationTemplate } from "@/components/external/email-verification-template";
+import { getEmailSuccessPaymentTemplate } from "@/components/external";
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -12,8 +29,76 @@ const sequelize = new Sequelize(
   }
 );
 
-class Transaction extends Model {
-  declare id_transaction: number;
+class Transaction extends Model<
+  InferAttributes<Transaction>,
+  InferCreationAttributes<Transaction>
+> {
+  declare id_transaction: CreationOptional<number>;
+  declare date: Date;
+  declare email_customer: string;
+  declare email_verified: CreationOptional<boolean>;
+  declare payment_valid: CreationOptional<boolean>;
+  declare payment_transaction_id: CreationOptional<string>;
+  declare email_verification_code: CreationOptional<string>;
+  declare createDetailTransaction: HasManyCreateAssociationMixin<
+    DetailTransaction,
+    "transaction_id"
+  >;
+  declare addDetailTransactions: HasManyAddAssociationMixin<
+    DetailTransaction,
+    number
+  >;
+  declare getDetailTransactions: HasManyGetAssociationsMixin<DetailTransaction>;
+  public declare static associations: {
+    detail_transactions: Association<Transaction, DetailTransaction>;
+  };
+
+  sendEmail = async () => {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "sonyfadhil11@gmail.com",
+        pass: "mkvgvrnqoxbgyqmi",
+      },
+    });
+
+    await transporter.sendMail({
+      from: "sonyfadhil11@gmail.com",
+      to: this.email_customer,
+      subject: "Email verification",
+      text: `Email verification code`,
+      html: getEmailVerificationTemplate({
+        verification_code: this.email_verification_code,
+      }),
+    });
+  };
+
+  getId = () => {
+    return String(this.id_transaction);
+  };
+
+  sendEmailSuccessPayment = async () => {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "sonyfadhil11@gmail.com",
+        pass: "mkvgvrnqoxbgyqmi",
+      },
+    });
+
+    await transporter.sendMail({
+      from: "sonyfadhil11@gmail.com",
+      to: this.email_customer,
+      subject: "Email verification",
+      text: `Email verification code`,
+      html: getEmailSuccessPaymentTemplate({ hashedId: this.getId() }),
+      /// kirim link tiketnya dia
+    });
+  };
 }
 
 Transaction.init(
@@ -55,13 +140,13 @@ Transaction.init(
       allowNull: false,
       defaultValue: false,
     },
+    payment_transaction_id: {
+      type: DataTypes.STRING,
+    },
     email_verification_code: {
       type: DataTypes.STRING,
       allowNull: false,
-      set() {
-        const random = Math.floor(Math.random() * (1000000 - 10) + 10);
-        this.setDataValue("email_verification_code", random);
-      },
+      defaultValue: String(Math.floor(Math.random() * (10000000 - 10) + 10)),
     },
   },
   {
@@ -70,12 +155,27 @@ Transaction.init(
   }
 );
 
-class DetailTransaction extends Model {
+class DetailTransaction extends Model<
+  InferAttributes<DetailTransaction>,
+  InferCreationAttributes<DetailTransaction>
+> {
   // Detail Transaction means all the ticket purchased in Transactions
   // model one to many From Transaction
   // One to One from Ticket
 
-  declare id_detail_transaction: number;
+  declare id_detail_transaction: CreationOptional<number>;
+  declare price: number;
+  declare discount: number;
+  declare actual_price: number | null;
+  declare transaction_id: ForeignKey<Transaction["id_transaction"]>;
+  declare ticket_id: ForeignKey<Ticket["id_ticket"]>;
+  declare quantity: number;
+
+  declare setTicket: BelongsToCreateAssociationMixin<Ticket>;
+
+  public declare static associations: {
+    tickets: Association<DetailTransaction, Ticket>;
+  };
 }
 
 DetailTransaction.init(
@@ -98,13 +198,22 @@ DetailTransaction.init(
     actual_price: {
       type: DataTypes.VIRTUAL,
       get() {
+        if (this.getDataValue("discount") === 0) {
+          return this.getDataValue("price");
+        }
+
         const discountPriced =
-          (this.getDataValue("discount") / this.getDataValue("price")) * 100;
-        return this.getDataValue("price") - discountPriced;
+          (this.getDataValue("discount") / 100) * this.getDataValue("price");
+        return Math.ceil(this.getDataValue("price") - discountPriced);
       },
       set(value) {
         throw new Error("Actual price cannot be set");
       },
+    },
+    quantity: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      defaultValue: 0,
+      allowNull: false,
     },
   },
   {
@@ -114,9 +223,7 @@ DetailTransaction.init(
 );
 
 Transaction.hasMany(DetailTransaction, {
-  foreignKey: {
-    allowNull: false,
-  },
+  onDelete: "CASCADE",
 });
 
 DetailTransaction.belongsTo(Transaction, {
@@ -126,7 +233,18 @@ DetailTransaction.belongsTo(Transaction, {
   onDelete: "CASCADE",
 });
 
-Ticket.hasMany(DetailTransaction);
-DetailTransaction.belongsTo(Ticket);
+Ticket.hasMany(DetailTransaction, {
+  onDelete: "CASCADE",
+});
 
-export { DetailTransaction, Transaction };
+DetailTransaction.belongsTo(Ticket, {
+  foreignKey: {
+    allowNull: false,
+  },
+  onDelete: "CASCADE",
+});
+
+export { DetailTransaction, Transaction, sequelize };
+
+export type TransactionProps = Attributes<Transaction>;
+export type DetailTransactionProps = Attributes<DetailTransaction>;

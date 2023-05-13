@@ -1,6 +1,3 @@
-
-
-
 import { getEmailTemplate } from "./email-template";
-
-export { getEmailTemplate }
+export * from "./email-success-payment-template";
+export { getEmailTemplate };

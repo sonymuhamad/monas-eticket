@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Layout } from "@/components/components";
 import { NextPageWithLayout } from "../_app";
-import { ReactElement, useMemo } from "react";
+import React, { ReactElement, useMemo } from "react";
 import {
   Paper,
   Grid,
@@ -21,11 +21,11 @@ import {
 import SkeletonCards from "@/components/components/card_skeleton";
 import { useState, useEffect } from "react";
 import { TicketProps } from "../../../models/ticket";
-
+import { useRouter } from "next/router";
 const TicketPage: NextPageWithLayout = () => {
+  const router = useRouter();
   const [ticketList, setTicketList] = useState<TicketProps[]>([]);
   const [loading, setLoading] = useState(false);
-
   const [selectedTicket, setSelectedTicket] = useState<null | TicketProps>(
     null
   );
@@ -55,6 +55,11 @@ const TicketPage: NextPageWithLayout = () => {
       };
     }
   }, [selectedTicket]);
+
+  const onClickBeliTiket = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    router.push("/ticket/order");
+  };
 
   const onClickSelectTicket = (selectedTicket: TicketProps) => {
     setSelectedTicket(selectedTicket);
@@ -104,13 +109,13 @@ const TicketPage: NextPageWithLayout = () => {
                   return (
                     <Card
                       key={id_ticket}
-                      sx={{ display: "flex", p: 2, my: 2 }}
+                      sx={{ display: "flex", p: 2, my: 2, maxHeight: 200 }}
                       component={Paper}
                       elevation={2}
                     >
                       <CardMedia
                         component="img"
-                        sx={{ width: 100 }}
+                        sx={{ width: 100, backgroundSize: "contain" }}
                         image={`/ticket-images/${image}`}
                         alt="ticket-card-images"
                       />
@@ -120,7 +125,7 @@ const TicketPage: NextPageWithLayout = () => {
                         <Box>
                           <CardContent>
                             <Typography variant="h6">{name}</Typography>
-                            <Typography paragraph variant="caption">
+                            <Typography paragraph variant="caption" noWrap>
                               {description}
                             </Typography>
                           </CardContent>
@@ -288,7 +293,8 @@ const TicketPage: NextPageWithLayout = () => {
           <Button
             variant="contained"
             LinkComponent="a"
-            href="/ticket"
+            href="/ticket/order"
+            onClick={onClickBeliTiket}
             size="large"
           >
             Beli tiket sekarang

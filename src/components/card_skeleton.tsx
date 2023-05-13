@@ -28,17 +28,15 @@ const SkeletonCards: React.FC = () => {
                 }}
               />
             </CardMedia>
-            <Box>
-              <CardContent>
-                <Skeleton
-                  variant="rectangular"
-                  sx={{
-                    height: 60,
-                    width: 350,
-                  }}
-                />
-              </CardContent>
-            </Box>
+
+            <CardContent
+              component={Skeleton}
+              variant="rectangular"
+              sx={{
+                height: 80,
+                width: "100%",
+              }}
+            ></CardContent>
           </Card>
         </Grid>
       ))}
