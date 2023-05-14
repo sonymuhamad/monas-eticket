@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      payment_transaction_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       email_verification_code: {
         type: Sequelize.STRING,
         allowNull: false,

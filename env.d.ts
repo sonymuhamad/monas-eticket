@@ -6,6 +6,8 @@ namespace NodeJS {
     DB_USER: string;
     CHIPERKEY: string;
     SERVERKEY: string;
-    CLIENTKEY: string;
+    NEXT_PUBLIC_CLIENTKEY: string;
+    NEXT_PUBLIC_MIDTRANSSNAPURL: string;
+    MIDTRANSAPIURL: string;
   }
 }

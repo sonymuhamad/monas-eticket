@@ -35,11 +35,11 @@ export default async function handler(
   await Ticket.sync({ alter: true });
 
   if (req.method === "POST") {
-    const { order_id, transaction_id } = req.body;
+    const { order_id, transaction_id, transaction_status } = req.body;
 
     try {
       const transaction = await Transaction.findByPk(Number(order_id));
-      if (transaction) {
+      if (transaction && transaction_status === "success") {
         transaction.payment_valid = true;
         transaction.payment_transaction_id = transaction_id;
         await transaction.sendEmailSuccessPayment();

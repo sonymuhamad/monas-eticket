@@ -244,11 +244,13 @@ const OrderPage: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
+    const midtransScriptUrl = process.env.NEXT_PUBLIC_MIDTRANSSNAPURL;
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
-    scriptTag.setAttribute("data-client-key", process.env.CLIENTKEY);
+    scriptTag.setAttribute(
+      "data-client-key",
+      process.env.NEXT_PUBLIC_CLIENTKEY
+    );
 
     document.body.appendChild(scriptTag);
 

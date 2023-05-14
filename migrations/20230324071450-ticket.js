@@ -22,6 +22,13 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.TEXT,
+      },
       terms: Sequelize.DataTypes.TEXT,
       how_to_use: Sequelize.DataTypes.TEXT,
       createdAt: {
