@@ -9,5 +9,6 @@ namespace NodeJS {
     NEXT_PUBLIC_CLIENTKEY: string;
     NEXT_PUBLIC_MIDTRANSSNAPURL: string;
     MIDTRANSAPIURL: string;
+    BASEURL: string;
   }
 }
