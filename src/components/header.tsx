@@ -6,7 +6,7 @@ import { TabContext, TabList } from "@mui/lab";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 
-type Path = "/" | "/history" | "/place" | "/ticket";
+type Path = "/" | "/history" | "/place" | "/ticket" | "/admin";
 
 const Header = () => {
   const [path, setPath] = useState<Path>("/");
@@ -21,6 +21,8 @@ const Header = () => {
       setPath("/place");
     } else if (strPath.startsWith("/ticket")) {
       setPath("/ticket");
+    } else if (strPath.startsWith("/admin")) {
+      setPath("/admin");
     }
   }, []);
 
@@ -101,6 +103,14 @@ const Header = () => {
                   label="Tiket"
                   value={"/ticket"}
                   aria-label="Tiket"
+                  sx={{
+                    fontWeight: 750,
+                  }}
+                />
+                <Tab
+                  label="Admin"
+                  value={"/admin"}
+                  aria-label="Admin"
                   sx={{
                     fontWeight: 750,
                   }}

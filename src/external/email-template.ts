@@ -1,11 +1,9 @@
 type Props = {
-    hashedId: string
-}
+  hashedId: string;
+};
 
 export const getEmailTemplate = (props: Props) => {
-
-    return (
-        `
+  return `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -39,7 +37,7 @@ export const getEmailTemplate = (props: Props) => {
         <h1>Reset Password</h1>
         <p> Email ini dibuat otomatis oleh Web App Monas E-Ticket </p>
          <p> Harap klik link dibawah ini untuk melanjutkan proses Reset Password anda </p>
-         <a href=http://localhost:3000/admin/set-password/${props.hashedId} >Reset Password</a>
+         <a href=${process.env.BASEURL}/admin/set-password/${props.hashedId} >Reset Password</a>
          
          </div>
          <br></br>
@@ -54,6 +52,5 @@ export const getEmailTemplate = (props: Props) => {
         </footer>
     </center>
 </body>
-</html>  `
-    )
-}
+</html>  `;
+};
