@@ -59,21 +59,17 @@ export default async function handler(
       };
       console.log(data);
       try {
-        const rest = await fetch(
-          "https://app.sandbox.midtrans.com/snap/v1/transactions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization:
-                "Basic " +
-                Buffer.from(process.env.SERVERKEY).toString("base64"),
-              // Above is API server key for the Midtrans account, encoded to base64
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const rest = await fetch(process.env.MIDTRANSAPIURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization:
+              "Basic " + Buffer.from(process.env.SERVERKEY).toString("base64"),
+            // Above is API server key for the Midtrans account, encoded to base64
+          },
+          body: JSON.stringify(data),
+        });
 
         const response: { token: string; redirect_url: string } =
           await rest.json();
