@@ -117,7 +117,7 @@ const TicketPage: NextPageWithLayout = () => {
                         component="img"
                         sx={{ width: 100, backgroundSize: "contain" }}
                         image={`/ticket-images/${image}`}
-                        alt="ticket-card-images"
+                        alt="ticket-card-image"
                       />
                       <CardActionArea
                         onClick={() => onClickSelectTicket(ticket)}
