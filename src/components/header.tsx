@@ -107,14 +107,6 @@ const Header = () => {
                     fontWeight: 750,
                   }}
                 />
-                <Tab
-                  label="Admin"
-                  value={"/admin"}
-                  aria-label="Admin"
-                  sx={{
-                    fontWeight: 750,
-                  }}
-                />
               </TabList>
             </TabContext>
           </nav>
