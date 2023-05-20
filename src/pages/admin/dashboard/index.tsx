@@ -13,8 +13,6 @@ const DashboardPage: NextPageWithLayout = (props: AdminProps) => {
   return (
     <>
       <h1>Hello From Dashboard Admin</h1>
-      <h2>{props.username}</h2>
-      <h3>{props.email}</h3>
     </>
   );
 };
