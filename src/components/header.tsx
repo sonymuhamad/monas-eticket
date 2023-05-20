@@ -73,7 +73,7 @@ const Header = () => {
               <TabList
                 value={path}
                 onChange={onChangePath}
-                aria-label="nav tabs example"
+                aria-label="Navigation tabs"
               >
                 <Tab
                   label="Home"
