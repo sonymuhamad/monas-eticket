@@ -53,7 +53,7 @@ const Header = () => {
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
         <Toolbar
-          id="back-to-top-anchor"
+          id="back-to-top"
           sx={{
             flexWrap: "wrap",
           }}
