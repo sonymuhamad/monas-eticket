@@ -23,9 +23,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
       - run: |
           env:
             NODE_OPTIONS: --max-old-space-size=16384 
           npm run build
-      - run: pm2 restart nextjs-app
+      - run: pm2 restart example
