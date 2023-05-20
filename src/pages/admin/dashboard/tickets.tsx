@@ -2,7 +2,6 @@ import LayoutAdmin from "@/components/components/admin/layout";
 import { NextPageWithLayout } from "../../_app";
 import { withSessionSsr } from "../../../../lib/config/withSession";
 
-import DataTable, { TableColumn } from "react-data-table-component";
 import React, { useState, useMemo } from "react";
 import {
   IconButton,
@@ -16,6 +15,13 @@ import {
   FormLabel,
   InputAdornment,
   Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import { Delete, Edit, More, Search } from "@mui/icons-material";
 import { TextareaAutosize } from "@mui/material";
@@ -297,72 +303,6 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
     }
   };
 
-  const column: TableColumn<TicketProps>[] = useMemo(
-    () => [
-      {
-        name: "name",
-        sortable: true,
-        selector: (row) => row.name,
-      },
-      {
-        name: "price",
-        selector: (row) => row.price,
-        format: (row) =>
-          !Number.isNaN(parseFloat(String(row.price)))
-            ? `Rp ${String(row.price)}`.replace(
-                /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                ","
-              )
-            : "Rp ",
-      },
-      {
-        name: "discount",
-        selector: (row) => row.discount,
-        format: (row) => `${row.discount} %`,
-      },
-      {
-        name: "actual price",
-        selector: (row) => row.actual_price,
-        format: (row) =>
-          !Number.isNaN(parseFloat(String(row.actual_price)))
-            ? `Rp ${String(row.actual_price)}`.replace(
-                /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                ","
-              )
-            : "Rp ",
-      },
-      {
-        name: "",
-        cell: (row: TicketProps) => (
-          <>
-            <IconButton
-              aria-label="edit"
-              color="info"
-              onClick={() => handleClickEditTicket(row)}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="delete"
-              color="error"
-              onClick={() => handleClickDeleteTicket(row.id_ticket)}
-            >
-              <Delete />
-            </IconButton>
-            <IconButton
-              aria-label="details"
-              color="success"
-              onClick={() => handleClickDetailTicket(row)}
-            >
-              <More />
-            </IconButton>
-          </>
-        ),
-      },
-    ],
-    []
-  );
-
   return (
     <>
       <Container
@@ -398,7 +338,78 @@ const AdminTickets: NextPageWithLayout<Props> = ({ data }: Props) => {
           </Grid>
         </Grid>
 
-        <DataTable columns={column} data={filteredTicket} />
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Price&nbsp;(Rp)</TableCell>
+                <TableCell align="right">Discount</TableCell>
+                <TableCell align="right">Actual Price&nbsp;(Rp)</TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredTicket.map((row) => {
+                const { name, price, discount, actual_price, id_ticket } = row;
+
+                return (
+                  <TableRow
+                    key={row.id_ticket}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {name}
+                    </TableCell>
+                    <TableCell align="right">
+                      {!Number.isNaN(parseFloat(String(price)))
+                        ? `Rp ${String(row.price)}`.replace(
+                            /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
+                            ","
+                          )
+                        : "Rp "}
+                    </TableCell>
+                    <TableCell align="right">{`${discount} %`}</TableCell>
+                    <TableCell align="right">
+                      {!Number.isNaN(parseFloat(String(actual_price)))
+                        ? `Rp ${String(actual_price)}`.replace(
+                            /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
+                            ","
+                          )
+                        : "Rp "}
+                    </TableCell>
+                    <TableCell align="right">
+                      {" "}
+                      <>
+                        <IconButton
+                          aria-label="edit"
+                          color="info"
+                          onClick={() => handleClickEditTicket(row)}
+                        >
+                          <Edit />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          color="error"
+                          onClick={() => handleClickDeleteTicket(id_ticket)}
+                        >
+                          <Delete />
+                        </IconButton>
+                        <IconButton
+                          aria-label="details"
+                          color="success"
+                          onClick={() => handleClickDetailTicket(row)}
+                        >
+                          <More />
+                        </IconButton>
+                      </>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         {/* Modal Edit Ticket */}
         <Modal
