@@ -39,16 +39,16 @@ import { DatePicker } from "@mui/x-date-pickers";
 import SkeletonCards from "@/components/components/card_skeleton";
 import { TicketProps } from "../../../models/ticket";
 import ShowMoreText from "@/components/components/ticket_page_components/text_hiders";
-import { CreateTransaction } from "../api/transaction";
-
+import transaction, { CreateTransaction } from "../api/transaction";
+import {
+  TransactionProps,
+  DetailTransactionProps,
+} from "../../../models/transaction";
+import { Transaction, DetailTransaction } from "../../../models/transaction";
 import { Add, Remove } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
 
-const config = {
-  client_key: "SB-Mid-client-QkEj2aR8V6QNDtVQ",
-  server_key: "SB-Mid-server-1HLNYb5kVEPfZ-g90odkMU_i",
-  // mode: ""  you can set to sandbox or production. Default is sandbox if empty.
-};
+import { withSessionSsr } from "../../../lib/config/withSession";
 
 const steps = [
   "Order details",
@@ -81,7 +81,15 @@ const theme = createTheme({
   },
 });
 
-const OrderPage: NextPageWithLayout = () => {
+interface Props {
+  currentTransaction?:
+    | (TransactionProps & { detailtransactions: DetailTransactionProps[] })
+    | null;
+}
+
+const OrderPage: NextPageWithLayout<Props> = ({
+  currentTransaction,
+}: Props) => {
   const router = useRouter();
   const [transaction, setTransaction] = useState<CreateTransaction | null>(
     null
@@ -92,7 +100,10 @@ const OrderPage: NextPageWithLayout = () => {
   const [verificationSent, setVerificationSent] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const [transactionToken, setTransactionToken] = useState<null | string>(null);
+  const [alertSeverity, setAlertSeverity] = useState<
+    "success" | "warning" | "error" | "info"
+  >("success");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [date, setDate] = useState<Dayjs | null>(null);
   const [order, setOrder] = useState<TicketOrder[]>([]);
@@ -174,8 +185,13 @@ const OrderPage: NextPageWithLayout = () => {
     const { ok, error, transaction }: JSONResponse = await res.json();
     if (error) {
       handleErrorSubmit(error);
+      setAlertSeverity("error");
+      setAlertMessage("Send email verification failed");
+      setOpenSnackbar(true);
     } else if (ok) {
       setVerificationSent(true);
+      setAlertSeverity("success");
+      setAlertMessage("Send email verification success");
       setOpenSnackbar(true);
       if (transaction) {
         setTransaction(transaction);
@@ -203,8 +219,14 @@ const OrderPage: NextPageWithLayout = () => {
       if (verified) {
         setEmailVerified(true);
         setActiveStep(2);
+        setAlertSeverity("success");
+        setAlertMessage("Email verified");
+        setOpenSnackbar(true);
       } else {
         setVerificationCodeError(true);
+        setAlertSeverity("error");
+        setAlertMessage("Invalid verification code");
+        setOpenSnackbar(true);
       }
     }
   };
@@ -264,7 +286,20 @@ const OrderPage: NextPageWithLayout = () => {
     if (payment === "success") {
       setActiveStep(3);
     }
+    if (emailVerified) {
+      setActiveStep(2);
+    }
   }, [router.query]);
+
+  useEffect(() => {
+    if (currentTransaction) {
+      const { detailtransactions, ...rest } = currentTransaction;
+      setTransaction({ ...rest, detail_transaction: detailtransactions });
+      if (rest.email_verified) {
+        setEmailVerified(true);
+      }
+    }
+  }, [currentTransaction]);
 
   return (
     <Container maxWidth="md" sx={{ mb: 4 }}>
@@ -273,7 +308,9 @@ const OrderPage: NextPageWithLayout = () => {
         autoHideDuration={6000}
         onClose={handleClose}
         message="Send email verification success"
-      />
+      >
+        <Alert severity={alertSeverity}>{alertMessage}</Alert>
+      </Snackbar>
       <Paper
         variant="outlined"
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
@@ -734,3 +771,28 @@ OrderPage.getLayout = (orderPage: ReactElement) => {
 };
 
 export default OrderPage;
+
+export const getServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req }) {
+    if (req.session.currentTransaction) {
+      const { id_transaction } = req.session.currentTransaction;
+      const transaction = await Transaction.findByPk(Number(id_transaction), {
+        include: DetailTransaction,
+      });
+      if (transaction) {
+        const parsedTransaction = JSON.stringify(transaction);
+        return {
+          props: {
+            currentTransaction: JSON.parse(parsedTransaction),
+          },
+        };
+      }
+    }
+
+    return {
+      props: {
+        currentTransaction: null,
+      },
+    };
+  }
+);

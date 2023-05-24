@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Transaction } from "../../../../models/transaction";
+import { withSessionRoute } from "../../../../lib/config/withSession";
 
 interface ExtendedApiRequest extends NextApiRequest {
   body: {
@@ -7,7 +8,7 @@ interface ExtendedApiRequest extends NextApiRequest {
   };
 }
 
-export default async function handler(
+export default withSessionRoute(async function handler(
   req: ExtendedApiRequest,
   res: NextApiResponse
 ) {
@@ -19,10 +20,11 @@ export default async function handler(
       const {
         body: { email_verification_code },
       } = req;
-      console.log(email_verification_code);
-      console.log(transaction.email_verification_code);
+
       if (email_verification_code === transaction.email_verification_code) {
         transaction.email_verified = true;
+        req.session.currentTransaction = transaction;
+        await req.session.save();
         await transaction.save();
         res.send({ verified: true });
       } else {
@@ -34,4 +36,4 @@ export default async function handler(
   } else {
     res.status(404).end();
   }
-}
+});

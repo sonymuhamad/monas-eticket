@@ -16,19 +16,10 @@ interface ExtendedApiRequest extends NextApiRequest {
   body: MakeTransaction;
 }
 
-const config = {
-  client_key: "SB-Mid-client-QkEj2aR8V6QNDtVQ",
-  server_key: "SB-Mid-server-1HLNYb5kVEPfZ-g90odkMU_i",
-  // mode: ""  you can set to sandbox or production. Default is sandbox if empty.
-};
-
 export default async function handler(
   req: ExtendedApiRequest,
   res: NextApiResponse
 ) {
-  await Transaction.sync({ alter: true });
-  await DetailTransaction.sync({ alter: true });
-  await Ticket.sync({ alter: true });
   if (req.method === "GET") {
     const { transactionId } = req.query as { transactionId: string };
     const transaction = await Transaction.findByPk(Number(transactionId));
@@ -57,7 +48,7 @@ export default async function handler(
           email: transaction.email_customer,
         },
       };
-      console.log(data);
+
       try {
         const rest = await fetch(process.env.MIDTRANSAPIURL, {
           method: "POST",
