@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Transaction, DetailTransaction } from "../../../../models/transaction";
 import { Ticket } from "../../../../models/ticket";
+import { withSessionRoute } from "../../../../lib/config/withSession";
 
 type CreatedTransactionData = {
   transaction_time: string;
@@ -26,14 +27,10 @@ interface ExtendedApiRequest extends NextApiRequest {
   body: CreatedTransactionData;
 }
 
-export default async function handler(
+export default withSessionRoute(async function handler(
   req: ExtendedApiRequest,
   res: NextApiResponse
 ) {
-  await Transaction.sync({ alter: true });
-  await DetailTransaction.sync({ alter: true });
-  await Ticket.sync({ alter: true });
-
   if (req.method === "POST") {
     const { order_id, transaction_id, transaction_status } = req.body;
 
@@ -42,6 +39,7 @@ export default async function handler(
       if (transaction && transaction_status === "success") {
         transaction.payment_valid = true;
         transaction.payment_transaction_id = transaction_id;
+        req.session.destroy();
         await transaction.sendEmailSuccessPayment();
         await transaction.save();
       }
@@ -51,4 +49,4 @@ export default async function handler(
       res.status(404).send({ ok: false });
     }
   }
-}
+});

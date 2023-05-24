@@ -7,6 +7,7 @@ import {
   sequelize,
 } from "../../../../models/transaction";
 import { Ticket } from "../../../../models/ticket";
+import { withSessionRoute } from "../../../../lib/config/withSession";
 
 export type CreateTransaction = TransactionProps & {
   detail_transaction: DetailTransactionProps[];
@@ -16,13 +17,10 @@ interface ExtendedApiRequest extends NextApiRequest {
   body: CreateTransaction;
 }
 
-export default async function handler(
+export default withSessionRoute(async function handler(
   req: ExtendedApiRequest,
   res: NextApiResponse
 ) {
-  await Transaction.sync({ alter: true });
-  await DetailTransaction.sync({ alter: true });
-  await Ticket.sync({ alter: true });
   if (req.method === "GET") {
     const transactions = await Transaction.findAll({
       include: ["detail_transactions"],
@@ -48,6 +46,8 @@ export default async function handler(
       }
       await transaction.sendEmail();
       await transactSequelize.commit();
+      req.session.currentTransaction = transaction;
+      await req.session.save();
       res.send({ ok: true, transaction });
     } catch (error) {
       console.log(error);
@@ -55,4 +55,4 @@ export default async function handler(
       await transactSequelize.rollback();
     }
   }
-}
+});

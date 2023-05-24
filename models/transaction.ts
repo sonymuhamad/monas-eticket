@@ -12,6 +12,7 @@ import {
   Association,
   BelongsToCreateAssociationMixin,
   HasManyGetAssociationsMixin,
+  NonAttribute,
 } from "sequelize";
 const nodemailer = require("nodemailer");
 
@@ -52,6 +53,7 @@ class Transaction extends Model<
   public declare static associations: {
     detail_transactions: Association<Transaction, DetailTransaction>;
   };
+  declare detailtransactions: NonAttribute<DetailTransaction[]>;
 
   sendEmail = async () => {
     let transporter = nodemailer.createTransport({
