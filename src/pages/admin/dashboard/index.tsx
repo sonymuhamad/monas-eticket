@@ -26,10 +26,8 @@ export default DashboardPage;
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const loggedAdmin = req.session.adminId;
-
     if (loggedAdmin) {
       const admin = await Admin.findByPk(loggedAdmin);
-
       if (admin) {
         const { username, email } = admin;
         return {

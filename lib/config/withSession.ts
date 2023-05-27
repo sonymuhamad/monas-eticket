@@ -10,7 +10,8 @@ const ironOptions = {
   cookieName: "monas-eticket",
   password: "DVpQRQNN5MLGArH8yv6RQtpLeJhf3z7a",
   cookieOptions: {
-    secure: process.env.NODE_ENV === "production" ? true : false,
+    // secure: process.env.NODE_ENV === "production" ? true : false,
+    secure: false,
   },
 };
 

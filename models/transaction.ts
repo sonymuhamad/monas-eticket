@@ -55,6 +55,9 @@ class Transaction extends Model<
   };
   declare detailtransactions: NonAttribute<DetailTransaction[]>;
 
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+
   sendEmail = async () => {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -150,6 +153,8 @@ Transaction.init(
       allowNull: false,
       defaultValue: String(Math.floor(Math.random() * (10000000 - 10) + 10)),
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     tableName: "transactions",
