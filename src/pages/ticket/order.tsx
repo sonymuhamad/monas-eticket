@@ -289,7 +289,7 @@ const OrderPage: NextPageWithLayout<Props> = ({
     if (emailVerified) {
       setActiveStep(2);
     }
-  }, [router.query]);
+  }, [router.query, emailVerified]);
 
   useEffect(() => {
     if (currentTransaction) {

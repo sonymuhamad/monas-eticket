@@ -36,7 +36,11 @@ export default withSessionRoute(async function handler(
 
     try {
       const transaction = await Transaction.findByPk(Number(order_id));
-      if (transaction && transaction_status === "success") {
+      if (
+        transaction &&
+        (transaction_status === "settlement" ||
+          transaction_status === "capture")
+      ) {
         transaction.payment_valid = true;
         transaction.payment_transaction_id = transaction_id;
         req.session.destroy();

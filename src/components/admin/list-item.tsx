@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import {
-  Dashboard,
-  Receipt,
-  Comment,
-} from "@mui/icons-material";
+import { Dashboard, Receipt, Comment, ReceiptLong } from "@mui/icons-material";
 import React from "react";
 
 type Path = {
@@ -29,7 +25,18 @@ const MainListItems = ({ pathname }: Path) => {
             <Receipt />
           </ListItemIcon>
 
-          <ListItemText primary="Tiket" />
+          <ListItemText primary="Ticket" />
+        </ListItemButton>
+      </Link>
+      <Link href={"/admin/dashboard/transactions"}>
+        <ListItemButton
+          selected={/\/admin\/dashboard\/transactions/.test(pathname)}
+        >
+          <ListItemIcon>
+            <ReceiptLong />
+          </ListItemIcon>
+
+          <ListItemText primary="Transaction" />
         </ListItemButton>
       </Link>
 

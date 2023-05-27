@@ -31,11 +31,12 @@ export default withSessionRoute(async function handler(
   if (req.method === "POST") {
     const { detail_transaction, ...rest } = req.body;
     const transactSequelize = await sequelize.transaction();
-
+    console.log(detail_transaction);
     try {
       const transaction = await Transaction.create(rest);
 
       for (const eachDetailTransact of detail_transaction) {
+        console.log(eachDetailTransact);
         const ticket = await Ticket.findByPk(eachDetailTransact.ticket_id);
         const detailTicket = await transaction.createDetailTransaction(
           eachDetailTransact
