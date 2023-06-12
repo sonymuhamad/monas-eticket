@@ -38,7 +38,7 @@ export const getEmailSuccessPaymentTemplate = (props: Props) => {
         <p> Email ini dibuat otomatis oleh Web App Monas E-Ticket </p>
          <p> Anda telah berhasil melakukan pembayaran tiket </p>
          <p> Link dibawah merupakan detail tiket yang sudah anda beli, silahkan tunjukkan detail tiket tersebut kepada petugas Monumen Nasional Indonesia </p>
-         <a href=${process.env.BASEURL}/ticket/transaction/${props.hashedId} >Reset Password</a>
+         <a href=${process.env.BASEURL}/ticket/transaction/${props.hashedId} >Detail Tiket</a>
          <p style="margin-top:15px; color:#696969;">#AyokeMonas</p>
          </div>
          <br></br>
