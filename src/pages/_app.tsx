@@ -4,6 +4,27 @@ import type { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Legend,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+  Point,
+  PointElement,
+  LineElement,
+} from "chart.js";
+
+ChartJS.register(
+  ArcElement,
+  Legend,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement
+);
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
